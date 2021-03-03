@@ -1,0 +1,29 @@
+.post-card {
+	display:flex;
+	flex-direction:column;
+	align-items: stretch;
+	justify-content: flex-start;
+	box-shadow: none;
+	border:1px solid $grey-lighter;
+	border-bottom:.5rem solid $primary;
+
+	.image {
+		background-color:$dark;
+
+		img {
+			object-fit: cover;
+		}
+	}
+
+	&:hover {
+		.title {
+			color:$red;
+		}
+	}
+
+	.card-content {
+		flex:1 0 auto;
+		border-left:$fat-border;
+		border-right:$fat-border;
+	}
+}

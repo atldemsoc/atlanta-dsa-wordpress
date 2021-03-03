@@ -1,0 +1,38 @@
+.post-grid {
+	$spacing:45px;
+
+	display:flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+
+	.post-card {
+		@include until($tablet) {
+			width:100%;
+
+			+ .post-card {
+				margin-top:$spacing;
+			}
+		}
+
+		@include between($tablet, $fullhd) {
+			@include grid-item(2, $spacing);
+		}
+
+		@include from($fullhd) {
+			@include grid-item(3, $spacing);
+		}
+	}
+
+	&.is-full {
+		.post-card {
+			@include between($tablet, $desktop) {
+				@include grid-item(2, $spacing);
+			}
+
+			@include from($desktop) {
+				@include grid-item(3, $spacing);
+			}
+		}
+	}
+}

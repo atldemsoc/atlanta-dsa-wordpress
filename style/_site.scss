@@ -1,0 +1,162 @@
+.site {
+  min-height:100vh;
+  display:flex;
+  flex-direction: column;
+  align-items: stretch;
+
+	.navbar {
+		position:relative;
+	}
+
+	&-nav {
+		&__logo {
+			width:2.5rem;
+			height:auto;
+			max-height:none !important;
+			margin-right:.5rem;
+		}
+
+		&__name {
+			font-size:1.4em;
+			font-weight:$weight-medium;
+			letter-spacing: -.03em;
+
+			&-dsa {
+				font-weight:$weight-heavy;
+			}
+		}
+	}
+
+	&__search-item {
+		position:relative;
+
+		&:focus-within {
+			background-color:$primary !important;
+		}
+	}
+
+	&__search-box {
+		background:$primary;
+		color:$text;
+
+		&.is-inactive {
+			display:none;
+		}
+
+		@include until($desktop) {
+			border-top:$fat-border;
+			padding:.75rem .6rem;
+		}
+
+		@include from($desktop) {
+			position:absolute;
+			top:0;
+			left:0;
+			right:0;
+			bottom:0;
+
+			&__inner {
+				height:100%;
+				display:flex;
+				flex-direction:column;
+				justify-content: center;
+				align-items: stretch;
+			}
+		}
+	}
+
+	&__main {
+		width:100%;
+		display:flex;
+		flex-direction:row;
+		justify-content: space-between;
+	}
+
+  &__content {
+    flex:1 1 auto;
+		display:flex;
+		flex-direction:column;
+		align-items: stretch;
+		justify-content: flex-start;
+
+		> * {
+			flex:1 0 auto;
+		}
+  }
+
+	&__sidebar {
+		margin-left:$gap;
+		flex:0 0 auto;
+		width:300px;
+
+		@include until($desktop) {
+			display:none;
+		}
+	}
+
+	&-footer {
+		&__social-items {
+			width:100%;
+			display:flex;
+			flex-direction:row;
+			justify-content: center;
+			align-items: flex-start;
+			flex-wrap:wrap;
+		}
+
+		&__social-item {
+			@include link-inherit-color;
+			margin:$gap * .5;
+			display:flex;
+			flex-direction:column;
+			justify-content: center;
+			align-items: center;
+			max-width:100px;
+
+			&:hover {
+				color:$red;
+			}
+
+			&__label {
+				margin-top:$gap * .25;
+				font-weight:$weight-bold;
+				text-align:center;
+				line-height:1.2em;
+			}
+		}
+
+		&__copyright {
+			margin-top:$gap;
+			text-align:center;
+		}
+	}
+
+	.navbar {
+		border-bottom:$fat-border;
+	}
+}
+
+.post-content {
+	&__figure {
+		margin-bottom:$gap;
+	}
+
+	&__image {
+		object-fit: cover;
+	}
+
+	&__content {
+		max-width:$max-content-width;
+		margin:0 auto;
+
+		p:first-of-type {
+			font-size:1.2em;
+			font-weight:$weight-semibold;
+			margin:2rem 0 1.5rem;
+
+			&:first-line {
+			}
+		}
+	}
+}
+

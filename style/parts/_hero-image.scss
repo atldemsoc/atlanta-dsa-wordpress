@@ -1,0 +1,53 @@
+.hero--image {
+	background-size: cover;
+	background-repeat: no-repeat;
+	border-bottom:$fat-border;
+
+	&.is-halfheight {
+		min-height:70vh;
+	}
+
+	&.is-primary {
+		.title,
+		.subtitle {
+			color:$text;
+		}
+	}
+
+	&.is-left {
+		background-position:left center;
+	}
+
+	&.is-center {
+		background-position: center center;
+	}
+
+	&.is-right {
+		background-position:right center;
+	}
+
+	&__inner {
+		display:flex;
+		flex-direction: row;
+		justify-content: flex-end;
+	}
+
+	.content {
+		font-weight:$weight-semibold;
+	}
+
+	.card {
+		border:1px solid $dark;
+		border-top:.5rem solid $dark;
+	}
+
+	@include until($tablet) {
+		background-image:url('images/banner-tech.png') !important;
+	}
+
+	@include from($tablet) {
+		.card {
+			max-width:375px;
+		}
+	}
+}

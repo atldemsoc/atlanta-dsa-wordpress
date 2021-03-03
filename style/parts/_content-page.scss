@@ -1,0 +1,11 @@
+.content-page {
+	&__header {
+		&.without-image {
+			max-width:$max-content-width;
+		}
+	}
+
+	.title {
+		margin-bottom:2rem;
+	}
+}
