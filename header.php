@@ -55,7 +55,7 @@ $chapterName = $chapterName ? $chapterName : 'Metro Atlanta';
 					 class="navbar-menu">
 				<div class="navbar-end">
 					<?php wp_nav_menu(array(
-						'theme-location' => 'header-menu', //change it according to your register_nav_menus() function
+						'theme_location' => 'primary-menu', //change it according to your register_nav_menus() function
 						'depth' => 2,
 						'menu' => 'NewNav',
 						'container' => '',

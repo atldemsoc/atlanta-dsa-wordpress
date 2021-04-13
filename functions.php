@@ -44,7 +44,8 @@ if ( ! function_exists( '_s_setup' ) ) :
 
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(
-			'menu-1' => esc_html__( 'Primary', '_s' ),
+			'primary-menu' => esc_html__( 'Primary Menu'),
+            'footer-menu' => esc_html__('Footer Menu'),
 		) );
 
 		/*
@@ -174,4 +175,23 @@ require get_template_directory() . '/inc/custom-fields.php';
 function get_template_partial($name, $parameters = []) {
 	extract($parameters);
 	require get_template_directory() . '/partials/' . $name . '.php';
+}
+
+class footer_menu_walker extends Walker_Nav_Menu
+{
+    function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0)
+    {
+        $class_names = join(' ', $item->classes);
+        $menu_item =
+            '<a href="' . esc_attr($item->url) . '" target="_blank" rel="noopener" class="site-footer__social-item">' .
+                '<div class="site-footer__social-item__icon">' .
+                    '<span class="icon is-medium">' .
+                        '<i class="fa-2x ' . $class_names . '"></i>' .
+                    '</span>' .
+                '</div>' .
+                '<div class="site-footer__social-item__label">' . esc_attr($item->attr_title) . '</div>' .
+            '</a>';
+
+        $output .= apply_filters('walker_nav_menu_start_el', $menu_item, $item, $depth, $args);
+    }
 }
