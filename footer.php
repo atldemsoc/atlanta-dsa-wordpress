@@ -17,58 +17,12 @@
 		<div class="container">
 <!--			<div class="title has-text-light has-text-centered">Stay in Touch!</div>-->
 			<div class="site-footer__social-items">
-				<a
-					href="https://twitter.com/atldemsoc"
-					target="_blank"
-					rel="noopener"
-					class="site-footer__social-item"
-				>
-					<div class="site-footer__social-item__icon">
-						<span class="icon is-medium">
-							<i class="fab fa-twitter fa-2x"></i>
-						</span>
-					</div>
-					<div class="site-footer__social-item__label">ATL DSA Twitter</div>
-				</a>
-				<a
-					href="https://www.instagram.com/atldemsoc/"
-					target="_blank"
-					rel="noopener"
-					class="site-footer__social-item"
-				>
-					<div class="site-footer__social-item__icon">
-						<span class="icon is-medium">
-							<i class="fab fa-instagram fa-2x"></i>
-						</span>
-					</div>
-					<div class="site-footer__social-item__label">ATL DSA Instagram</div>
-				</a>
-				<a
-					href="https://www.facebook.com/atldemsoc/"
-					target="_blank"
-					rel="noopener"
-					class="site-footer__social-item"
-				>
-					<div class="site-footer__social-item__icon">
-						<span class="icon is-medium">
-							<i class="fab fa-facebook fa-2x"></i>
-						</span>
-					</div>
-					<div class="site-footer__social-item__label">ATL DSA Facebook</div>
-				</a>
-				<a
-					href="http://www.dsausa.org/"
-					target="_blank"
-					rel="noopener"
-					class="site-footer__social-item"
-				>
-					<div class="site-footer__social-item__icon">
-						<span class="icon is-medium">
-							<i class="fas fa-fist-raised fa-2x"></i>
-						</span>
-					</div>
-					<div class="site-footer__social-item__label">National DSA</div>
-				</a>
+                <?php wp_nav_menu(array(
+                    'theme-location' => 'footer-menu',
+                    'container' => false,
+                    'items_wrap' => '%3$s',
+                    'walker' => new footer_menu_walker()
+                )); ?>
 			</div>
 			<div class="site-footer__copyright">&copy; <?= date('Y'); ?> Atlanta DSA</div>
 		</div>
