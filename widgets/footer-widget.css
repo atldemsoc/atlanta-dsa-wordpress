@@ -1,6 +1,7 @@
 .footer-widget {
     color: white;
     background-color: red;
+    flex: none!important;
 }
 
 .footer-widget .grid {
