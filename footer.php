@@ -11,8 +11,8 @@
 
 ?>
 
+    <?php dynamic_sidebar('footer-widget-sidebar'); ?>
 	</div><!-- #content -->
-
 	<footer class="site-footer footer">
 		<div class="container">
 <!--			<div class="title has-text-light has-text-centered">Stay in Touch!</div>-->
@@ -28,7 +28,6 @@
 		</div>
 	</footer>
 </div><!-- #page -->
-
 <?php wp_footer(); ?>
 
 <?php get_template_part( 'template-parts/analytics' ); ?>

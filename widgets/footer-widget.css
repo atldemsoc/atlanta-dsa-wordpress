@@ -1,0 +1,82 @@
+.footer-widget {
+    color: white;
+    background-color: red;
+}
+
+.footer-widget .grid {
+    max-width: 1080px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+}
+
+.footer-widget .grid-item {
+    padding: 1rem;
+    align-items: center;
+    display: grid;
+}
+
+.footer-widget .grid-item p {
+    text-align: justify;
+    line-height: 1.5;
+    font-weight: 700;
+}
+
+.footer-widget .button-container {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+.footer-widget .btn {
+    font-weight: 600 !important;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    line-height:1.2;
+    padding: 0.5rem 0.75rem 0.625rem;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 1rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    margin-left: 1rem!important;
+    margin-right: 1rem!important;
+}
+
+.footer-widget .btn-light {
+    color: #e70109;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+.footer-widget .btn-light:hover {
+    color: black;
+    background-color: #dae0e5;
+    border-color: #dae0e5;
+}
+
+.footer-widget .btn-outline-light {
+    color: #f8f9fa;
+    background-color: transparent;
+    border-color: #f8f9fa;
+}
+
+.footer-widget .btn-outline-light:hover {
+    color: black;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+@media all and (min-width: 768px) {
+    .footer-widget > .grid {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+}
