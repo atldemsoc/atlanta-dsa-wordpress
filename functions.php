@@ -42,7 +42,6 @@ if ( ! function_exists( '_s_setup' ) ) :
 		 */
 		add_theme_support( 'post-thumbnails' );
 
-		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(
 			'primary-menu' => esc_html__( 'Primary Menu'),
             'footer-menu' => esc_html__('Footer Menu'),
@@ -167,6 +166,8 @@ if ( class_exists( 'WooCommerce' ) ) {
 
 require_once('navwalker.php');
 require_once('bulma-pagination.php');
+
+require_once(get_template_directory() . '/widgets/footer-widget.php');
 
 require get_template_directory() . '/inc/theme-settings.php';
 
