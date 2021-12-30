@@ -22,9 +22,9 @@ get_header();
 		'duoSlot' => DUO_SLOT_TERTIARY,
 	)); ?>
 
-	<div class="container section">
+	<!-- <div class="container section">
 		<?php get_template_part( 'template-parts/recent-posts' ); ?>
-	</div>
+	</div> -->
 
 </div>
 
