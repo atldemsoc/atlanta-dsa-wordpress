@@ -10,6 +10,14 @@ get_header();
 
 	<?php get_template_part( 'template-parts/header', 'hero-image' ); ?>
 
+	<div class="section container post-content">
+		<div class="content post-content__content">
+			<?php
+			the_content();
+			?>
+		</div>
+	</div>
+
 	<?php get_template_partial('duo', array(
 		'duoSlot' => DUO_SLOT_PRIMARY,
 	)); ?>

@@ -19,9 +19,5 @@ get_header();
 	</div>
 </div>
 
-<div class="section container">
-	<?php get_template_part( 'template-parts/recent', 'posts' ); ?>
-</div>
-
 <?php
 get_footer();

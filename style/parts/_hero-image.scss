@@ -1,10 +1,15 @@
 .hero--image {
 	background-size: cover;
 	background-repeat: no-repeat;
-	border-bottom:$fat-border;
+	// border-bottom:$fat-border;
+
+	.hero-body {
+		padding-top: 1rem !important;
+		padding-bottom: 1rem !important;
+	}
 
 	&.is-halfheight {
-		min-height:70vh;
+		min-height:50vh;
 	}
 
 	&.is-primary {
@@ -37,8 +42,9 @@
 	}
 
 	.card {
-		border:1px solid $dark;
-		border-top:.5rem solid $dark;
+		// border:1px solid $dark;
+		// border-top:.5rem solid $dark;
+		border-radius: 0px
 	}
 
 	@include until($tablet) {

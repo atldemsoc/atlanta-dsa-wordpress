@@ -1,17 +1,24 @@
 .post-card {
 	display:flex;
-	flex-direction:column;
+	flex-direction:row;
 	align-items: stretch;
 	justify-content: flex-start;
-	box-shadow: none;
-	border:1px solid $grey-lighter;
+	// box-shadow: none;
+	// border:1px solid $grey-lighter;
 	border-bottom:.5rem solid $primary;
+	margin-bottom: 2rem;
 
-	.image {
-		background-color:$dark;
-
-		img {
-			object-fit: cover;
+	.card-image {
+		border-top-left-radius: 0.25em;
+		background-color:$red;
+		width: 200px;
+		
+		.image {
+			img {
+				object-fit: cover;
+				border-radius: 0px;
+				border-top-right-radius: 0px;
+			}
 		}
 	}
 
@@ -22,8 +29,10 @@
 	}
 
 	.card-content {
-		flex:1 0 auto;
-		border-left:$fat-border;
-		border-right:$fat-border;
+		flex:1;
+		// border-left:$fat-border;
+		// border-right:$fat-border;
+		border: none;
+		border-top-left-radius: 0.25rem;
 	}
 }

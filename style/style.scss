@@ -1,7 +1,7 @@
 /*!
 Theme Name: Atlanta DSA Wordpress
-Author: Metro Atlanta DSA
-Author URI: https://madsa.ga/
+Author: Atlanta DSA
+Author URI: https://atldsa.org/
 Description: Overthrowing capitalism one post at a time
 Version: 1.0.4
 License: GNU General Public License v2 or later
@@ -13,7 +13,7 @@ Use it to make something cool, have fun, and share what you've learned with othe
 */
 $font-path-manifold: 'fonts/manifold';
 
-@import "../../node_modules/dsa-bulma/scss/bundle";
+@import "../node_modules/dsa-bulma/scss/bundle";
 
 @import "includes";
 @import "site";

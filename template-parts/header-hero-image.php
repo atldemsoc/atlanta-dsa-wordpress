@@ -32,7 +32,7 @@
 							<div class="buttons">
 								<a
 									href="<?= $ctaUrl ?>"
-									class="button is-dark is-medium is-fullwidth"
+									class="button is-primary is-medium is-fullwidth"
 								>
 									<?php the_field(HEADER_HERO_IMAGE_CTA_LABEL_KEY); ?>
 								</a>

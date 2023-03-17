@@ -1,0 +1,51 @@
+{
+  "name": "atlanta-dsa-wordpress",
+  "version": "1.0.0",
+  "description": "Atlanta DSA Wordpress Theme",
+  "author": "Atlanta DSA",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "WordPress",
+    "Theme"
+  ],
+  "homepage": "https://github.com/Automattic/_s#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Automattic/_s.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Automattic/_s/issues"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^25.5.1",
+    "dir-archiver": "^1.1.1",
+    "node-sass": "^7.0.1",
+    "rtlcss": "^3.5.0",
+    "stylelint-config-standard": "^30.0.1"
+  },
+  "rtlcssConfig": {
+    "options": {
+      "autoRename": false,
+      "autoRenameStrict": false,
+      "blacklist": {},
+      "clean": true,
+      "greedy": false,
+      "processUrls": false,
+      "stringMap": []
+    },
+    "plugins": [],
+    "map": false
+  },
+  "scripts": {
+    "watch": "node-sass style/ -o ./ --source-map true --output-style expanded --indent-type tab --indent-width 1 -w",
+    "compile:css": "node-sass style/ -o ./ && stylelint '*.css' --fix || true && stylelint '*.css' --fix",
+    "compile:rtl": "rtlcss style.css style-rtl.css",
+    "lint:scss": "wp-scripts lint-style 'style/**/*.scss'",
+    "lint:js": "wp-scripts lint-js 'js/*.js'",
+    "bundle": "dir-archiver --src . --dest ../atlanta-dsa-wordpress.zip --exclude .DS_Store .stylelintrc.json .eslintrc .git .gitattributes .github .gitignore README.md composer.json composer.lock node_modules vendor package-lock.json package.json .travis.yml phpcs.xml.dist sass style.css.map yarn.lock"
+  },
+  "dependencies": {
+    "bulma": "^0.9.4",
+    "dsa-bulma": "^0.1.4"
+  }
+}
