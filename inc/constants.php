@@ -8,6 +8,9 @@ const HEADER_HERO_IMAGE_BODY_KEY = 'header_hero_image_body';
 const HEADER_HERO_IMAGE_CTA_LABEL_KEY = 'header_hero_image_cta_label';
 const HEADER_HERO_IMAGE_CTA_URL_KEY = 'header_hero_image_cta_url';
 
+const HEADER_HERO_VIDEO_MP4_KEY = 'header_hero_video_mp4';
+const HEADER_HERO_VIDEO_WEBM_KEY = 'header_hero_video_webm';
+
 const HEADER_DUO_IMAGE_KEY = 'header_duo_image';
 const HEADER_DUO_BULMA_TYPE = 'header_duo_type';
 const HEADER_DUO_SUPERTITLE_KEY = 'header_duo_supertitle';
