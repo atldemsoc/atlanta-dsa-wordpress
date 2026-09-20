@@ -8,7 +8,7 @@ get_header();
 ?>
 <div class="home has-flipped-odd-duos">
 
-	<?php get_template_part( 'template-parts/header', 'hero-video' ); ?>
+	<?php get_template_part( 'template-parts/header', 'hero-image', array( 'video' => true ) ); ?>
 
 	<div class="section container post-content">
 		<div class="content post-content__content">
