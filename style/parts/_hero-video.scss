@@ -1,4 +1,4 @@
-// Modifier for .hero--image when a background video is set (see template-parts/header-hero-video.php)
+// Modifier for .hero--image when a background video is set (see template-parts/header-hero-image.php)
 .hero--video {
 	position: relative;
 	overflow: hidden;
@@ -25,6 +25,34 @@
 
 	&.is-right &__media {
 		object-position: right center;
+	}
+
+	// Phones: push the card down so the video shows above it
+	@include until($tablet) {
+		.hero-body {
+			margin-top: clamp(11rem, 33vh, 18rem);
+			margin-bottom: 1.25rem;
+		}
+	}
+
+	// Tablets and up: a tall hero (window height minus the nav and a peek of the
+	// next section) with the card centered. unquote() keeps older Sass compilers
+	// from trying to evaluate clamp()/calc(); the vh line is the fallback for
+	// browsers without svh support.
+	@include from($tablet) {
+		&.hero--image.is-halfheight {
+			min-height: unquote("clamp(28rem, calc(100vh - 9rem), 80rem)");
+			min-height: unquote("clamp(28rem, calc(100svh - 9rem), 80rem)");
+		}
+
+		.hero-body {
+			display: flex;
+			align-items: center;
+		}
+
+		.hero--image__inner {
+			width: 100%;
+		}
 	}
 
 	// Visitors who prefer reduced motion see the static image instead

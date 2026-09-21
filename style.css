@@ -8244,6 +8244,19 @@ a.has-text-danger:hover, a.has-text-danger:focus {
     object-position: left center; }
   .hero--video.is-right .hero--video__media {
     object-position: right center; }
+  @media screen and (max-width: 699px) {
+    .hero--video .hero-body {
+      margin-top: clamp(11rem, 33vh, 18rem);
+      margin-bottom: 1.25rem; } }
+  @media screen and (min-width: 700px) {
+    .hero--video.hero--image.is-halfheight {
+      min-height: clamp(28rem, calc(100vh - 9rem), 80rem);
+      min-height: clamp(28rem, calc(100svh - 9rem), 80rem); }
+    .hero--video .hero-body {
+      display: flex;
+      align-items: center; }
+    .hero--video .hero--image__inner {
+      width: 100%; } }
   @media (prefers-reduced-motion: reduce) {
     .hero--video__media {
       display: none; } }
