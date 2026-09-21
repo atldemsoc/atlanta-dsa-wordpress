@@ -310,6 +310,44 @@ function get_header_hero_video_config($templateName) {
 	);
 }
 
+function get_header_hero_second_button_config($templateName) {
+	return array(
+		'key' => 'header_hero_second_button_' . $templateName,
+		'title' => 'Header Second Button',
+		'fields' => array (
+			array (
+				'key' => 'field_' . HEADER_HERO_IMAGE_CTA2_LABEL_KEY,
+				'label' => 'Second call to action',
+				'name' => HEADER_HERO_IMAGE_CTA2_LABEL_KEY,
+				'type' => 'text',
+				'instructions' => 'Optional second button under the header card, e.g. "Upcoming Events". It only shows if both the label and the link are set.',
+				'required' => 0,
+			),
+			array (
+				'key' => 'field_' . HEADER_HERO_IMAGE_CTA2_URL_KEY,
+				'label' => 'Second call to action link',
+				'name' => HEADER_HERO_IMAGE_CTA2_URL_KEY,
+				'type' => 'link',
+				'required' => 0,
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'page',
+				),
+				array (
+					'param' => 'page_template',
+					'operator' => '==',
+					'value' => $templateName,
+				),
+			),
+		),
+	);
+}
+
 function get_header_duo_config($templateName) {
 	return array(
 		'key' => 'header_duo_'  . $templateName,
