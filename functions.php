@@ -120,8 +120,13 @@ add_action( 'widgets_init', '_s_widgets_init' );
  * Enqueue scripts and styles.
  */
 function _s_scripts() {
+	// Font Awesome Free from the cdnjs public CDN (no account/kit needed).
+	// v4-shims keeps the old-style menu classes (e.g. "fa fa-instagram") working.
+	wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css', array(), '6.7.2' );
+	wp_enqueue_style( 'font-awesome-v4-shims', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/v4-shims.min.css', array( 'font-awesome' ), '6.7.2' );
+
 	// Version by file mtime so browsers pick up CSS changes on deploy
-	wp_enqueue_style( '_s-style', get_stylesheet_uri(), array(), filemtime( get_stylesheet_directory() . '/style.css' ) );
+	wp_enqueue_style( '_s-style', get_stylesheet_uri(), array( 'font-awesome-v4-shims' ), filemtime( get_stylesheet_directory() . '/style.css' ) );
 
 	wp_enqueue_script( '_s-navigation', get_template_directory_uri() . '/script.js', array(), '20151215', true );
 
