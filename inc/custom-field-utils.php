@@ -244,6 +244,110 @@ function get_header_hero_image_config($templateName) {
 	);
 }
 
+/**
+ * Adds another page template to a field group's location rules, so the same
+ * group (and its saved content) is shared between templates.
+ */
+function with_page_template($config, $templateName) {
+	$config['location'][] = array (
+		array (
+			'param' => 'post_type',
+			'operator' => '==',
+			'value' => 'page',
+		),
+		array (
+			'param' => 'page_template',
+			'operator' => '==',
+			'value' => $templateName,
+		),
+	);
+
+	return $config;
+}
+
+function get_header_hero_video_config($templateName) {
+	return array(
+		'key' => 'header_hero_video_' . $templateName,
+		'title' => 'Header Background Video',
+		'fields' => array (
+			array (
+				'key' => 'field_' . HEADER_HERO_VIDEO_MP4_KEY,
+				'label' => 'Video (MP4)',
+				'name' => HEADER_HERO_VIDEO_MP4_KEY,
+				'type' => 'file',
+				'instructions' => 'Plays muted on a loop behind the header card. Keep it short and small (ideally under 5 MB, no audio needed). The header "Image" is shown while the video loads and for visitors who prefer reduced motion. If no video is set, the header falls back to the image.',
+				'return_format' => 'array',
+				'library' => 'all',
+				'mime_types' => 'mp4',
+				'required' => 0,
+			),
+			array (
+				'key' => 'field_' . HEADER_HERO_VIDEO_WEBM_KEY,
+				'label' => 'Video (WebM, optional)',
+				'name' => HEADER_HERO_VIDEO_WEBM_KEY,
+				'type' => 'file',
+				'instructions' => 'Optional smaller alternative for browsers that support WebM. The MP4 is still used as the fallback.',
+				'return_format' => 'array',
+				'library' => 'all',
+				'mime_types' => 'webm',
+				'required' => 0,
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'page',
+				),
+				array (
+					'param' => 'page_template',
+					'operator' => '==',
+					'value' => $templateName,
+				),
+			),
+		),
+	);
+}
+
+function get_header_hero_second_button_config($templateName) {
+	return array(
+		'key' => 'header_hero_second_button_' . $templateName,
+		'title' => 'Header Second Button',
+		'fields' => array (
+			array (
+				'key' => 'field_' . HEADER_HERO_IMAGE_CTA2_LABEL_KEY,
+				'label' => 'Second call to action',
+				'name' => HEADER_HERO_IMAGE_CTA2_LABEL_KEY,
+				'type' => 'text',
+				'instructions' => 'Optional second button under the header card, e.g. "Upcoming Events". It only shows if both the label and the link are set.',
+				'required' => 0,
+			),
+			array (
+				'key' => 'field_' . HEADER_HERO_IMAGE_CTA2_URL_KEY,
+				'label' => 'Second call to action link',
+				'name' => HEADER_HERO_IMAGE_CTA2_URL_KEY,
+				'type' => 'link',
+				'required' => 0,
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'page',
+				),
+				array (
+					'param' => 'page_template',
+					'operator' => '==',
+					'value' => $templateName,
+				),
+			),
+		),
+	);
+}
+
 function get_header_duo_config($templateName) {
 	return array(
 		'key' => 'header_duo_'  . $templateName,

@@ -18,8 +18,6 @@ $chapterName = $chapterName ? $chapterName : 'Metro Atlanta';
 	<meta charset="<?php bloginfo('charset'); ?>">
 	<meta name="viewport"
 				content="width=device-width, initial-scale=1">
-	<script src="https://kit.fontawesome.com/77d892d14a.js" crossorigin="anonymous"></script>
-
 	<?php wp_head(); ?>
 </head>
 
