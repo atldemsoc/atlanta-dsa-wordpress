@@ -1,16 +1,37 @@
+// Base font size; set from Customize > Typography (inc/customizer.php).
+html {
+	font-size:var(--site-font-size, 16px);
+}
+
 .site {
   min-height:100vh;
+  // 100vw full-width blocks include the scrollbar's width; clip that sliver
+  // instead of letting the page scroll sideways.
+  overflow-x:clip;
   display:flex;
   flex-direction: column;
   align-items: stretch;
 
+	// Header bar height can be set in Customize > Header Bar, which sets
+	// --site-navbar-height. Without it, the fallbacks match Bulma's defaults.
 	.navbar {
 		position:relative;
+
+		&,
+		> .container,
+		.navbar-brand {
+			min-height:var(--site-navbar-height, 3.25rem);
+		}
+
+		.navbar-burger {
+			height:var(--site-navbar-height, 3.25rem);
+		}
 	}
 
 	&-nav {
 		&__logo {
-			width:2.5rem;
+			// Shrinks with a short header bar (logo + 1rem item padding).
+			width:min(2.5rem, calc(var(--site-navbar-height, 3.5rem) - 1rem));
 			height:auto;
 			max-height:none !important;
 			margin-right:.5rem;
@@ -18,6 +39,7 @@
 
 		&__name {
 			font-size:1.4em;
+			line-height:1.2;
 			font-weight:$weight-medium;
 			letter-spacing: -.03em;
 
@@ -70,6 +92,26 @@
 		display:flex;
 		flex-direction:row;
 		justify-content: space-between;
+
+		// Centered / Wide page templates have no sidebar column, so the
+		// content isn't pushed left by an empty sidebar.
+		&.is-centered,
+		&.is-wide {
+			justify-content: center;
+		}
+
+		// Wide: the content lines up with the header/footer content edges
+		// (the same Bulma .container), plus an optional per-page margin
+		// (--wide-page-margin) that is capped on small screens.
+		&.container.is-wide > .site__content > .section {
+			padding-left:calc(1.5rem + min(var(--wide-page-margin, 0px), 5vw));
+			padding-right:calc(1.5rem + min(var(--wide-page-margin, 0px), 5vw));
+
+			@include from($desktop) {
+				padding-left:min(var(--wide-page-margin, 0px), 5vw);
+				padding-right:min(var(--wide-page-margin, 0px), 5vw);
+			}
+		}
 	}
 
   &__content {
@@ -160,3 +202,16 @@
 	}
 }
 
+// Visually hidden but still available to screen readers (e.g. hidden page titles).
+.screen-reader-text {
+	border:0;
+	clip:rect(1px, 1px, 1px, 1px);
+	clip-path:inset(50%);
+	height:1px;
+	margin:-1px;
+	overflow:hidden;
+	padding:0;
+	position:absolute !important;
+	width:1px;
+	word-wrap:normal !important;
+}

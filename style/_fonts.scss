@@ -1,0 +1,129 @@
+// Site fonts, chosen in Customize > Typography (inc/fonts.php).
+//
+// The settings set the CSS variables below and add "has-*" body classes;
+// with nothing chosen, the theme looks as it did before. Fonts that aren't
+// used are never downloaded. Manifold DSA's @font-face rules come from
+// dsa-bulma. The bundled fonts use "... Web" family names so a copy installed
+// on a visitor's computer can't stand in for (or hide) the served files.
+
+// Union Gothic, by Matthew Anderson (https://wehtt.am/fonts/).
+@font-face {
+	font-family:'Union Gothic Web';
+	src:url("fonts/union-gothic/union_gothic-variable.ttf") format("truetype");
+	font-weight:400 1000;
+	font-stretch:50% 200%;
+	font-style:normal;
+	font-display:swap;
+}
+
+// Geist (https://github.com/vercel/geist-font).
+@font-face {
+	font-family:'Geist Web';
+	src:url("fonts/geist/Geist-Variable.woff2") format("woff2");
+	font-weight:100 900;
+	font-style:normal;
+	font-display:swap;
+}
+
+@font-face {
+	font-family:'Geist Web';
+	src:url("fonts/geist/Geist-Italic-Variable.woff2") format("woff2");
+	font-weight:100 900;
+	font-style:italic;
+	font-display:swap;
+}
+
+:root {
+	--site-font-body:"ManifoldDSA", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	--site-font-heading:var(--site-font-body);
+	--site-heading-stretch:normal;
+	--site-font-menu:var(--site-font-body);
+	--site-menu-stretch:normal;
+	--site-font-button:var(--site-font-body);
+	--site-button-stretch:normal;
+}
+
+$site-headings:"h1, h2, h3, h4, h5, h6, .title";
+$site-menus:".site .navbar .navbar-item, .site .navbar .navbar-link, .site-footer__social-item__label, .footer-widget .menu, .footer-widget .wp-block-navigation";
+$site-buttons:".button, .wp-block-button__link, .wp-element-button";
+
+// Body text. Theme weights: page content (.content) 500, other text 400.
+body,
+button,
+input,
+optgroup,
+select,
+textarea {
+	font-family:var(--site-font-body);
+}
+
+.is-family-primary,
+.is-family-secondary,
+.is-family-sans-serif {
+	font-family:var(--site-font-body) !important;
+}
+
+body.has-body-weight,
+.has-body-weight .content {
+	font-weight:var(--site-weight-body);
+}
+
+// Headings. Theme weights: page titles 800, other headings 700.
+#{$site-headings} {
+	font-family:var(--site-font-heading);
+	font-stretch:var(--site-heading-stretch);
+}
+
+.has-heading-weight {
+	#{$site-headings} {
+		font-weight:var(--site-weight-heading);
+	}
+}
+
+.has-uppercase-headings {
+	#{$site-headings} {
+		text-transform:uppercase;
+	}
+}
+
+// Header and footer menus, including the name next to the logo (which keeps
+// its own logo weights and the capitalization typed in Customize > Header
+// Bar). Theme weight: 700.
+#{$site-menus} {
+	font-family:var(--site-font-menu);
+	font-stretch:var(--site-menu-stretch);
+}
+
+.has-menu-weight {
+	#{$site-menus} {
+		font-weight:var(--site-weight-menu);
+	}
+}
+
+.has-uppercase-menus {
+	#{$site-menus} {
+		text-transform:uppercase;
+	}
+
+	.site .navbar .site-nav__name {
+		text-transform:none;
+	}
+}
+
+// Theme and block editor buttons. Theme weight: 700.
+#{$site-buttons} {
+	font-family:var(--site-font-button);
+	font-stretch:var(--site-button-stretch);
+}
+
+.has-button-weight {
+	#{$site-buttons} {
+		font-weight:var(--site-weight-button);
+	}
+}
+
+.has-uppercase-buttons {
+	#{$site-buttons} {
+		text-transform:uppercase;
+	}
+}

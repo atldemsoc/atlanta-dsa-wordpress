@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Hompage
+Template Name: Homepage
 */
 require_once('inc/constants.php');
 get_header();

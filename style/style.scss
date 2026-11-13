@@ -16,6 +16,7 @@ $font-path-manifold: 'fonts/manifold';
 @import "../node_modules/dsa-bulma/scss/bundle";
 
 @import "includes";
+@import "fonts";
 @import "site";
 @import "templates";
 @import "parts";

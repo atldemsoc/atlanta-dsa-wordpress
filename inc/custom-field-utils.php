@@ -430,3 +430,85 @@ function get_header_duo_config($templateName) {
 		),
 	);
 }
+
+/**
+ * Page display options shared by the standard page templates
+ * (Default, Centered and Wide). Shown in the editor's sidebar.
+ */
+function get_page_display_config($templateNames) {
+	$location = array();
+
+	foreach ($templateNames as $templateName) {
+		$location[] = array (
+			array (
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'page',
+			),
+			array (
+				'param' => 'page_template',
+				'operator' => '==',
+				'value' => $templateName,
+			),
+		);
+	}
+
+	return array(
+		'key' => 'page_display_options',
+		'title' => 'Page Display',
+		'position' => 'side',
+		'fields' => array (
+			array (
+				'key' => 'field_' . PAGE_HIDE_TITLE_KEY,
+				'label' => 'Hide page title',
+				'name' => PAGE_HIDE_TITLE_KEY,
+				'type' => 'true_false',
+				'ui' => true,
+				'default_value' => false,
+				'instructions' => 'Still read by screen readers and search engines.',
+				'required' => 0,
+			),
+		),
+		'location' => $location,
+	);
+}
+
+/**
+ * Settings for the Wide page template. Shown in the editor's sidebar.
+ */
+function get_wide_page_config($templateName) {
+	return array(
+		'key' => 'wide_page_options_' . $templateName,
+		'title' => 'Wide Layout',
+		'position' => 'side',
+		'fields' => array (
+			array (
+				'key' => 'field_' . PAGE_WIDE_MARGIN_KEY,
+				'label' => 'Extra side margin (px)',
+				'name' => PAGE_WIDE_MARGIN_KEY,
+				'type' => 'number',
+				'instructions' => '0 = aligned with the header and footer.',
+				'default_value' => 0,
+				'min' => 0,
+				'max' => PAGE_WIDE_MARGIN_MAX,
+				'step' => 1,
+				'append' => 'px',
+				'required' => 0,
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'post_type',
+					'operator' => '==',
+					'value' => 'page',
+				),
+				array (
+					'param' => 'page_template',
+					'operator' => '==',
+					'value' => $templateName,
+				),
+			),
+		),
+	);
+}
