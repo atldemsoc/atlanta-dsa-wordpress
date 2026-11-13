@@ -22,3 +22,17 @@
 		max-width:none;
 	}
 }
+
+// Full-width blocks ("Full width" alignment, e.g. a Cover block) break out to
+// the edges of the screen on the Centered and Wide templates, where the
+// content column is centered on the page. On the default template (with the
+// sidebar column) they stay the width of the content column.
+.content-page.is-centered,
+.content-page.is-wide {
+	.post-content__content .alignfull {
+		width:100vw;
+		max-width:100vw;
+		margin-left:calc(50% - 50vw);
+		margin-right:calc(50% - 50vw);
+	}
+}

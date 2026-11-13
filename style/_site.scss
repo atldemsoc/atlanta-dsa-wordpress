@@ -1,5 +1,8 @@
 .site {
   min-height:100vh;
+  // 100vw full-width blocks include the scrollbar's width; clip that sliver
+  // instead of letting the page scroll sideways.
+  overflow-x:clip;
   display:flex;
   flex-direction: column;
   align-items: stretch;

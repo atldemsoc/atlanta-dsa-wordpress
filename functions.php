@@ -79,6 +79,11 @@ if ( ! function_exists( '_s_setup' ) ) :
 			'flex-width'  => true,
 			'flex-height' => true,
 		) );
+
+		// Let editors set blocks (e.g. Cover, Group) to "Full width".
+		// Full-width blocks span the whole screen on the Centered and Wide
+		// page templates (see style/parts/_content-page.scss).
+		add_theme_support( 'align-wide' );
 	}
 endif;
 add_action( 'after_setup_theme', '_s_setup' );

@@ -8015,6 +8015,7 @@ a.has-text-danger:hover, a.has-text-danger:focus {
 
 .site {
   min-height: 100vh;
+  overflow-x: clip;
   display: flex;
   flex-direction: column;
   align-items: stretch; }
@@ -8208,6 +8209,13 @@ a.has-text-danger:hover, a.has-text-danger:focus {
 .content-page.is-wide .content-page__header.container,
 .content-page.is-wide .post-content__content {
   max-width: none; }
+
+.content-page.is-centered .post-content__content .alignfull,
+.content-page.is-wide .post-content__content .alignfull {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw); }
 
 .screen-reader-text {
   border: 0;
