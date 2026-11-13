@@ -8041,6 +8041,8 @@ a.has-text-danger:hover, a.has-text-danger:focus {
   --site-heading-stretch:normal;
   --site-font-menu:var(--site-font-body);
   --site-menu-stretch:normal;
+  --site-font-button:var(--site-font-body);
+  --site-button-stretch:normal;
 }
 
 body,
@@ -8078,6 +8080,19 @@ h1, h2, h3, h4, h5, h6,
 }
 .has-uppercase-menus .site .navbar .site-nav__name {
   text-transform: none;
+}
+
+.button,
+.wp-block-button__link,
+.wp-element-button {
+  font-family: var(--site-font-button);
+  font-stretch: var(--site-button-stretch);
+}
+
+.has-button-weight .button,
+.has-button-weight .wp-block-button__link,
+.has-button-weight .wp-element-button {
+  font-weight: var(--site-weight-button);
 }
 
 .has-uppercase-buttons .button,

@@ -1,15 +1,16 @@
 <?php
 /**
  * Site fonts, set in Customize > Typography:
- * - Body font, Heading font and Menu font (header and footer menus)
- * - Body, heading and menu font weights
+ * - Body, Heading, Menu (header and footer menus) and Button fonts
+ * - Body, heading, menu and button font weights
  * - "Uppercase headings", "Uppercase menus" and "Uppercase buttons" toggles
  *
  * The font choices set CSS variables (--site-font-body, --site-font-heading,
- * --site-heading-stretch, --site-font-menu, --site-menu-stretch) used by
- * style/_fonts.scss. Weights set --site-weight-body/-heading/-menu and add
- * the body classes "has-body-weight", "has-heading-weight" and
- * "has-menu-weight" (otherwise the theme's own weights apply). Uppercase
+ * --site-heading-stretch, --site-font-menu, --site-menu-stretch,
+ * --site-font-button, --site-button-stretch) used by
+ * style/_fonts.scss. Weights set --site-weight-body/-heading/-menu/-button
+ * and add the body classes "has-<role>-weight" (otherwise the theme's own
+ * weights apply). Uppercase
  * headings / menus / buttons add the body classes "has-uppercase-headings",
  * "has-uppercase-menus" and "has-uppercase-buttons".
  *
@@ -25,12 +26,14 @@
 const DSA_BODY_FONT_SETTING = 'dsa_body_font';
 const DSA_HEADING_FONT_SETTING = 'dsa_heading_font';
 const DSA_MENU_FONT_SETTING = 'dsa_menu_font';
+const DSA_BUTTON_FONT_SETTING = 'dsa_button_font';
 const DSA_HEADING_UPPERCASE_SETTING = 'dsa_heading_uppercase';
 const DSA_MENU_UPPERCASE_SETTING = 'dsa_menu_uppercase';
 const DSA_BUTTON_UPPERCASE_SETTING = 'dsa_button_uppercase';
 const DSA_BODY_WEIGHT_SETTING = 'dsa_body_weight';
 const DSA_HEADING_WEIGHT_SETTING = 'dsa_heading_weight';
 const DSA_MENU_WEIGHT_SETTING = 'dsa_menu_weight';
+const DSA_BUTTON_WEIGHT_SETTING = 'dsa_button_weight';
 const DSA_WEIGHT_THEME_DEFAULT = 'default';
 const DSA_FONT_DEFAULT = 'manifold';
 const DSA_FONT_SAME_AS_BODY = 'same';
@@ -109,12 +112,13 @@ function dsa_sanitize_optional_weight( $value ) {
 		: DSA_WEIGHT_THEME_DEFAULT;
 }
 
-/** Saved weights: array( 'body' | 'heading' | 'menu' => int|'default' ). */
+/** Saved weights: array( 'body' | 'heading' | 'menu' | 'button' => int|'default' ). */
 function dsa_get_font_weights() {
 	return array(
 		'body'    => dsa_sanitize_optional_weight( get_theme_mod( DSA_BODY_WEIGHT_SETTING, DSA_WEIGHT_THEME_DEFAULT ) ),
 		'heading' => dsa_sanitize_optional_weight( get_theme_mod( DSA_HEADING_WEIGHT_SETTING, DSA_WEIGHT_THEME_DEFAULT ) ),
 		'menu'    => dsa_sanitize_optional_weight( get_theme_mod( DSA_MENU_WEIGHT_SETTING, DSA_WEIGHT_THEME_DEFAULT ) ),
+		'button'  => dsa_sanitize_optional_weight( get_theme_mod( DSA_BUTTON_WEIGHT_SETTING, DSA_WEIGHT_THEME_DEFAULT ) ),
 	);
 }
 
@@ -345,6 +349,13 @@ function dsa_customize_register_fonts( $wp_customize ) {
 			'choices'     => $theme_weight,
 			'priority'    => 16,
 		),
+		DSA_BUTTON_WEIGHT_SETTING  => array(
+			'label'       => __( 'Button weight', '_s' ),
+			'default'     => DSA_WEIGHT_THEME_DEFAULT,
+			'sanitize'    => 'dsa_sanitize_optional_weight',
+			'choices'     => $theme_weight,
+			'priority'    => 19,
+		),
 	);
 
 	$wp_customize->add_setting( DSA_MENU_UPPERCASE_SETTING, array(
@@ -359,6 +370,19 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'priority' => 17,
 	) );
 
+	$wp_customize->add_setting( DSA_BUTTON_FONT_SETTING, array(
+		'default'           => DSA_FONT_SAME_AS_BODY,
+		'sanitize_callback' => 'dsa_sanitize_secondary_font',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( DSA_BUTTON_FONT_SETTING, array(
+		'section'  => 'dsa_typography',
+		'label'    => __( 'Button font', '_s' ),
+		'type'     => 'select',
+		'choices'  => $other_choices,
+		'priority' => 18,
+	) );
+
 	$wp_customize->add_setting( DSA_BUTTON_UPPERCASE_SETTING, array(
 		'default'           => false,
 		'sanitize_callback' => 'dsa_sanitize_checkbox',
@@ -368,7 +392,7 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'section'  => 'dsa_typography',
 		'label'    => __( 'Uppercase buttons', '_s' ),
 		'type'     => 'checkbox',
-		'priority' => 18,
+		'priority' => 20,
 	) );
 
 	foreach ( $weight_controls as $id => $control ) {
@@ -396,7 +420,7 @@ add_action( 'customize_register', 'dsa_customize_register_fonts', 20 );
 /**
  * CSS variable declarations for the chosen fonts ('' if all defaults).
  */
-function dsa_font_css_vars( $body_key, $heading_key, $menu_key = DSA_FONT_SAME_AS_BODY ) {
+function dsa_font_css_vars( $body_key, $heading_key, $menu_key = DSA_FONT_SAME_AS_BODY, $button_key = DSA_FONT_SAME_AS_BODY ) {
 	$choices = dsa_font_choices();
 	$vars    = array();
 
@@ -404,7 +428,7 @@ function dsa_font_css_vars( $body_key, $heading_key, $menu_key = DSA_FONT_SAME_A
 		$vars[] = '--site-font-body:' . $choices[ $body_key ]['stack'];
 	}
 
-	foreach ( array( 'heading' => $heading_key, 'menu' => $menu_key ) as $role => $key ) {
+	foreach ( array( 'heading' => $heading_key, 'menu' => $menu_key, 'button' => $button_key ) as $role => $key ) {
 		if ( DSA_FONT_SAME_AS_BODY === $key ) {
 			continue;
 		}
@@ -435,12 +459,13 @@ function dsa_fonts_inline_css() {
 	$vars = dsa_font_css_vars(
 		dsa_sanitize_body_font( get_theme_mod( DSA_BODY_FONT_SETTING, DSA_FONT_DEFAULT ) ),
 		dsa_sanitize_secondary_font( get_theme_mod( DSA_HEADING_FONT_SETTING, DSA_FONT_SAME_AS_BODY ) ),
-		dsa_sanitize_secondary_font( get_theme_mod( DSA_MENU_FONT_SETTING, DSA_FONT_SAME_AS_BODY ) )
+		dsa_sanitize_secondary_font( get_theme_mod( DSA_MENU_FONT_SETTING, DSA_FONT_SAME_AS_BODY ) ),
+		dsa_sanitize_secondary_font( get_theme_mod( DSA_BUTTON_FONT_SETTING, DSA_FONT_SAME_AS_BODY ) )
 	);
 
 	$weights = dsa_get_font_weights();
 	$weight_vars = array();
-	foreach ( array( 'body', 'heading', 'menu' ) as $role ) {
+	foreach ( array_keys( $weights ) as $role ) {
 		if ( DSA_WEIGHT_THEME_DEFAULT !== $weights[ $role ] ) {
 			$weight_vars[] = "--site-weight-{$role}:" . $weights[ $role ];
 		}
@@ -469,7 +494,7 @@ function dsa_heading_uppercase_body_class( $classes ) {
 		$classes[] = 'has-uppercase-buttons';
 	}
 	$weights = dsa_get_font_weights();
-	foreach ( array( 'body', 'heading', 'menu' ) as $role ) {
+	foreach ( array_keys( $weights ) as $role ) {
 		if ( DSA_WEIGHT_THEME_DEFAULT !== $weights[ $role ] ) {
 			$classes[] = "has-{$role}-weight";
 		}
@@ -514,6 +539,7 @@ function dsa_fonts_preview_js() {
 			}
 			bindSecondary('%3\$s', 'heading');
 			bindSecondary('%4\$s', 'menu');
+			bindSecondary('%12\$s', 'button');
 			function bindClass(settingId, className) {
 				wp.customize(settingId, function (setting) {
 					setting.bind(function (on) {
@@ -540,6 +566,7 @@ function dsa_fonts_preview_js() {
 			bindWeight('%7\$s', 'body');
 			bindWeight('%8\$s', 'heading');
 			bindWeight('%9\$s', 'menu');
+			bindWeight('%13\$s', 'button');
 		})(document.documentElement);",
 		DSA_BODY_FONT_SETTING,
 		DSA_FONT_DEFAULT,
@@ -551,7 +578,9 @@ function dsa_fonts_preview_js() {
 		DSA_HEADING_WEIGHT_SETTING,
 		DSA_MENU_WEIGHT_SETTING,
 		DSA_MENU_UPPERCASE_SETTING,
-		DSA_BUTTON_UPPERCASE_SETTING
+		DSA_BUTTON_UPPERCASE_SETTING,
+		DSA_BUTTON_FONT_SETTING,
+		DSA_BUTTON_WEIGHT_SETTING
 	);
 
 	wp_add_inline_script( 'customize-preview', $js );
