@@ -90,13 +90,7 @@ function dsa_customize_register_typography( $wp_customize ) {
 		'priority'    => 5,
 		'section'     => 'dsa_typography',
 		'label'       => __( 'Base font size (px)', '_s' ),
-		'description' => sprintf(
-			/* translators: 1: default size, 2: min size, 3: max size */
-			__( 'Default text size for the whole site. Headings and spacing scale with it. Default %1$s, between %2$s and %3$s.', '_s' ),
-			DSA_BASE_FONT_SIZE_DEFAULT,
-			DSA_BASE_FONT_SIZE_MIN,
-			DSA_BASE_FONT_SIZE_MAX
-		),
+		'description' => __( 'Default 16.', '_s' ),
 		'type'        => 'number',
 		'input_attrs' => array(
 			'min'  => DSA_BASE_FONT_SIZE_MIN,
@@ -137,14 +131,10 @@ function dsa_customize_register_header_bar( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( DSA_NAVBAR_HEIGHT_SETTING, array(
+		'priority'    => 10,
 		'section'     => 'dsa_header_bar',
-		'label'       => __( 'Header bar height (px)', '_s' ),
-		'description' => sprintf(
-			/* translators: 1: min height, 2: max height */
-			__( 'Height of the red menu bar at the top of the site. 0 = automatic (the default, about 56px). Between %1$s and %2$s; the logo shrinks to fit shorter bars.', '_s' ),
-			DSA_NAVBAR_HEIGHT_MIN,
-			DSA_NAVBAR_HEIGHT_MAX
-		),
+		'label'       => __( 'Height (px)', '_s' ),
+		'description' => __( '0 = automatic.', '_s' ),
 		'type'        => 'number',
 		'input_attrs' => array(
 			'min'  => 0,
@@ -154,6 +144,91 @@ function dsa_customize_register_header_bar( $wp_customize ) {
 	) );
 }
 add_action( 'customize_register', 'dsa_customize_register_header_bar' );
+
+/**
+ * Header Bar: the name next to the logo (e.g. "Atlanta DSA" or "ATL DSA"),
+ * optionally with the word "DSA" in bold.
+ */
+const DSA_SITE_NAME_SETTING = 'dsa_site_name';
+const DSA_SITE_NAME_BOLD_SETTING = 'dsa_site_name_bold_dsa';
+
+/**
+ * What the header showed before this setting existed: the chapter name from
+ * the "ATL DSA" settings page (or "Metro Atlanta") followed by "DSA".
+ */
+function dsa_default_site_name() {
+	$chapter = function_exists( 'ATL_DSA_get_theme_option' ) ? ATL_DSA_get_theme_option( SETTINGS_CHAPTER_NAME_KEY ) : '';
+	return trim( ( $chapter ? $chapter : 'Metro Atlanta' ) . ' DSA' );
+}
+
+function dsa_get_site_name() {
+	$name = trim( (string) get_theme_mod( DSA_SITE_NAME_SETTING, '' ) );
+	return '' !== $name ? $name : dsa_default_site_name();
+}
+
+/**
+ * The name as HTML, with each separate word "DSA" wrapped for bold styling
+ * when enabled.
+ */
+function dsa_get_site_name_html() {
+	$html = esc_html( dsa_get_site_name() );
+	if ( get_theme_mod( DSA_SITE_NAME_BOLD_SETTING, true ) ) {
+		$html = preg_replace( '/\bDSA\b/', '<span class="site-nav__name-dsa">DSA</span>', $html );
+	}
+	return $html;
+}
+
+function dsa_the_site_name() {
+	echo dsa_get_site_name_html(); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped above.
+}
+
+function dsa_sanitize_site_name( $value ) {
+	return sanitize_text_field( $value );
+}
+
+function dsa_sanitize_bool( $value ) {
+	return ! empty( $value );
+}
+
+function dsa_customize_register_site_name( $wp_customize ) {
+	$wp_customize->add_setting( DSA_SITE_NAME_SETTING, array(
+		'default'           => dsa_default_site_name(),
+		'sanitize_callback' => 'dsa_sanitize_site_name',
+		'transport'         => 'postMessage',
+	) );
+
+	$wp_customize->add_control( DSA_SITE_NAME_SETTING, array(
+		'section'     => 'dsa_header_bar',
+		'label'       => __( 'Name next to the logo', '_s' ),
+		'description' => __( 'e.g. Atlanta DSA or ATL DSA.', '_s' ),
+		'type'        => 'text',
+		'priority'    => 5,
+	) );
+
+	$wp_customize->add_setting( DSA_SITE_NAME_BOLD_SETTING, array(
+		'default'           => true,
+		'sanitize_callback' => 'dsa_sanitize_bool',
+		'transport'         => 'postMessage',
+	) );
+
+	$wp_customize->add_control( DSA_SITE_NAME_BOLD_SETTING, array(
+		'section'     => 'dsa_header_bar',
+		'label'       => __( 'Bold "DSA"', '_s' ),
+		'type'        => 'checkbox',
+		'priority'    => 6,
+	) );
+
+	// Live preview: re-render just the name.
+	if ( isset( $wp_customize->selective_refresh ) ) {
+		$wp_customize->selective_refresh->add_partial( 'dsa_site_name', array(
+			'selector'            => '.site-nav__name',
+			'settings'            => array( DSA_SITE_NAME_SETTING, DSA_SITE_NAME_BOLD_SETTING ),
+			'container_inclusive' => false,
+			'render_callback'     => 'dsa_get_site_name_html',
+		) );
+	}
+}
+add_action( 'customize_register', 'dsa_customize_register_site_name' );
 
 function dsa_get_base_font_size() {
 	return dsa_sanitize_base_font_size( get_theme_mod( DSA_BASE_FONT_SIZE_SETTING, DSA_BASE_FONT_SIZE_DEFAULT ) );

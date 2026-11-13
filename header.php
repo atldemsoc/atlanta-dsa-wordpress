@@ -9,8 +9,6 @@
  * @package _s
  */
 
-$chapterName = ATL_DSA_get_theme_option(SETTINGS_CHAPTER_NAME_KEY);
-$chapterName = $chapterName ? $chapterName : 'Metro Atlanta';
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -36,7 +34,7 @@ $chapterName = $chapterName ? $chapterName : 'Metro Atlanta';
 							 height="35"
 							 alt="DSA Rose"
 					/>
-					<span class="site-nav__name"><?= $chapterName ?> <span class="site-nav__name-dsa">DSA</span></span>
+					<span class="site-nav__name"><?php dsa_the_site_name(); ?></span>
 				</a>
 
 				<a role="button"

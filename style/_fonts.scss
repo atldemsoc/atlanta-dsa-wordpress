@@ -68,6 +68,31 @@ h1, h2, h3, h4, h5, h6,
 	}
 }
 
+// Customize > Typography > Uppercase menus. The name next to the logo keeps
+// the capitalization typed in Customize > Header Bar.
+.has-uppercase-menus {
+	.site .navbar .navbar-item,
+	.site .navbar .navbar-link,
+	.site-footer__social-item__label,
+	.footer-widget .menu,
+	.footer-widget .wp-block-navigation {
+		text-transform:uppercase;
+	}
+
+	.site .navbar .site-nav__name {
+		text-transform:none;
+	}
+}
+
+// Customize > Typography > Uppercase buttons: theme and block editor buttons.
+.has-uppercase-buttons {
+	.button,
+	.wp-block-button__link,
+	.wp-element-button {
+		text-transform:uppercase;
+	}
+}
+
 // Customize > Typography > Menu font: header bar and footer menus.
 .site .navbar .navbar-item,
 .site .navbar .navbar-link,

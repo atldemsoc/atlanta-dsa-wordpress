@@ -3,14 +3,15 @@
  * Site fonts, set in Customize > Typography:
  * - Body font, Heading font and Menu font (header and footer menus)
  * - Body, heading and menu font weights
- * - "Uppercase headings" toggle
+ * - "Uppercase headings", "Uppercase menus" and "Uppercase buttons" toggles
  *
  * The font choices set CSS variables (--site-font-body, --site-font-heading,
  * --site-heading-stretch, --site-font-menu, --site-menu-stretch) used by
  * style/_fonts.scss. Weights set --site-weight-body/-heading/-menu and add
  * the body classes "has-body-weight", "has-heading-weight" and
  * "has-menu-weight" (otherwise the theme's own weights apply). Uppercase
- * headings adds the body class "has-uppercase-headings".
+ * headings / menus / buttons add the body classes "has-uppercase-headings",
+ * "has-uppercase-menus" and "has-uppercase-buttons".
  *
  * Manifold DSA, Union Gothic and Geist ship with the theme (fonts/).
  * Styrene B is loaded from files named StyreneB-Regular, StyreneB-Bold and
@@ -25,6 +26,8 @@ const DSA_BODY_FONT_SETTING = 'dsa_body_font';
 const DSA_HEADING_FONT_SETTING = 'dsa_heading_font';
 const DSA_MENU_FONT_SETTING = 'dsa_menu_font';
 const DSA_HEADING_UPPERCASE_SETTING = 'dsa_heading_uppercase';
+const DSA_MENU_UPPERCASE_SETTING = 'dsa_menu_uppercase';
+const DSA_BUTTON_UPPERCASE_SETTING = 'dsa_button_uppercase';
 const DSA_BODY_WEIGHT_SETTING = 'dsa_body_weight';
 const DSA_HEADING_WEIGHT_SETTING = 'dsa_heading_weight';
 const DSA_MENU_WEIGHT_SETTING = 'dsa_menu_weight';
@@ -261,9 +264,7 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		$other_choices[ $key ] = $font['label'];
 	}
 
-	$styrene_note = dsa_styrene_font_files()
-		? ''
-		: ' ' . __( 'Styrene B files not found (upload StyreneB-Regular, -Bold and -Black to the Media Library); until then it shows Manifold DSA.', '_s' );
+	$styrene_note = dsa_styrene_font_files() ? '' : __( 'Styrene B files not found; it will show Manifold DSA.', '_s' );
 
 	$wp_customize->add_setting( DSA_BODY_FONT_SETTING, array(
 		'default'           => DSA_FONT_DEFAULT,
@@ -274,7 +275,7 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'priority'    => 10,
 		'section'     => 'dsa_typography',
 		'label'       => __( 'Body font', '_s' ),
-		'description' => __( 'Font for paragraphs, buttons and forms.', '_s' ) . $styrene_note,
+		'description' => $styrene_note,
 		'type'        => 'select',
 		'choices'     => $body_choices,
 	) );
@@ -288,7 +289,6 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'priority'    => 12,
 		'section'     => 'dsa_typography',
 		'label'       => __( 'Heading font', '_s' ),
-		'description' => __( 'Font for page titles and headings (H1–H6). Union Gothic is a condensed headline font.', '_s' ),
 		'type'        => 'select',
 		'choices'     => $other_choices,
 	) );
@@ -302,7 +302,6 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'priority'    => 14,
 		'section' => 'dsa_typography',
 		'label'   => __( 'Uppercase headings', '_s' ),
-		'description' => __( 'Show all page titles and headings (H1–H6) in capital letters.', '_s' ),
 		'type'    => 'checkbox',
 	) );
 
@@ -315,42 +314,62 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'priority'    => 15,
 		'section'     => 'dsa_typography',
 		'label'       => __( 'Menu font', '_s' ),
-		'description' => __( 'Font for the menus in the header bar and footer, including the "Atlanta DSA" name next to the logo.', '_s' ),
+		'description' => __( 'Also used for the name next to the logo.', '_s' ),
 		'type'        => 'select',
 		'choices'     => $other_choices,
 	) );
 
 	// Font weights.
 	$weights      = dsa_font_weight_choices();
-	$weight_note  = __( 'Fonts without that exact weight use the nearest one (Styrene B has 400, 700 and 900; Union Gothic starts at 400).', '_s' );
 	$theme_weight = array( DSA_WEIGHT_THEME_DEFAULT => __( 'Theme default', '_s' ) ) + $weights;
 
 	$weight_controls = array(
 		DSA_BODY_WEIGHT_SETTING    => array(
-			'label'       => __( 'Body font weight', '_s' ),
-			'description' => __( 'Theme default: page content 500, other text 400. Bold text stays bold.', '_s' ) . ' ' . $weight_note,
+			'label'       => __( 'Body weight', '_s' ),
 			'default'     => DSA_WEIGHT_THEME_DEFAULT,
 			'sanitize'    => 'dsa_sanitize_optional_weight',
 			'choices'     => $theme_weight,
 			'priority'    => 11,
 		),
 		DSA_HEADING_WEIGHT_SETTING => array(
-			'label'       => __( 'Heading font weight', '_s' ),
-			'description' => __( 'Theme default: page titles 800, other headings 700. Weights set on a block in the editor still win.', '_s' ),
+			'label'       => __( 'Heading weight', '_s' ),
 			'default'     => DSA_WEIGHT_THEME_DEFAULT,
 			'sanitize'    => 'dsa_sanitize_optional_weight',
 			'choices'     => $theme_weight,
 			'priority'    => 13,
 		),
 		DSA_MENU_WEIGHT_SETTING    => array(
-			'label'       => __( 'Menu font weight', '_s' ),
-			'description' => __( 'Theme default: 700. The "Atlanta DSA" name keeps its logo weights.', '_s' ),
+			'label'       => __( 'Menu weight', '_s' ),
 			'default'     => DSA_WEIGHT_THEME_DEFAULT,
 			'sanitize'    => 'dsa_sanitize_optional_weight',
 			'choices'     => $theme_weight,
 			'priority'    => 16,
 		),
 	);
+
+	$wp_customize->add_setting( DSA_MENU_UPPERCASE_SETTING, array(
+		'default'           => false,
+		'sanitize_callback' => 'dsa_sanitize_checkbox',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( DSA_MENU_UPPERCASE_SETTING, array(
+		'section'  => 'dsa_typography',
+		'label'    => __( 'Uppercase menus', '_s' ),
+		'type'     => 'checkbox',
+		'priority' => 17,
+	) );
+
+	$wp_customize->add_setting( DSA_BUTTON_UPPERCASE_SETTING, array(
+		'default'           => false,
+		'sanitize_callback' => 'dsa_sanitize_checkbox',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( DSA_BUTTON_UPPERCASE_SETTING, array(
+		'section'  => 'dsa_typography',
+		'label'    => __( 'Uppercase buttons', '_s' ),
+		'type'     => 'checkbox',
+		'priority' => 18,
+	) );
 
 	foreach ( $weight_controls as $id => $control ) {
 		$wp_customize->add_setting( $id, array(
@@ -361,7 +380,6 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		$wp_customize->add_control( $id, array(
 			'section'     => 'dsa_typography',
 			'label'       => $control['label'],
-			'description' => $control['description'],
 			'type'        => 'select',
 			'choices'     => $control['choices'],
 			'priority'    => $control['priority'],
@@ -444,6 +462,12 @@ function dsa_heading_uppercase_body_class( $classes ) {
 	if ( get_theme_mod( DSA_HEADING_UPPERCASE_SETTING, false ) ) {
 		$classes[] = 'has-uppercase-headings';
 	}
+	if ( get_theme_mod( DSA_MENU_UPPERCASE_SETTING, false ) ) {
+		$classes[] = 'has-uppercase-menus';
+	}
+	if ( get_theme_mod( DSA_BUTTON_UPPERCASE_SETTING, false ) ) {
+		$classes[] = 'has-uppercase-buttons';
+	}
 	$weights = dsa_get_font_weights();
 	foreach ( array( 'body', 'heading', 'menu' ) as $role ) {
 		if ( DSA_WEIGHT_THEME_DEFAULT !== $weights[ $role ] ) {
@@ -490,11 +514,16 @@ function dsa_fonts_preview_js() {
 			}
 			bindSecondary('%3\$s', 'heading');
 			bindSecondary('%4\$s', 'menu');
-			wp.customize('%5\$s', function (setting) {
-				setting.bind(function (on) {
-					document.body.classList.toggle('has-uppercase-headings', !!on);
+			function bindClass(settingId, className) {
+				wp.customize(settingId, function (setting) {
+					setting.bind(function (on) {
+						document.body.classList.toggle(className, !!on);
+					});
 				});
-			});
+			}
+			bindClass('%5\$s', 'has-uppercase-headings');
+			bindClass('%10\$s', 'has-uppercase-menus');
+			bindClass('%11\$s', 'has-uppercase-buttons');
 			var weights = %6\$s;
 			function bindWeight(settingId, role) {
 				wp.customize(settingId, function (setting) {
@@ -520,7 +549,9 @@ function dsa_fonts_preview_js() {
 		wp_json_encode( array_keys( dsa_font_weight_choices() ) ),
 		DSA_BODY_WEIGHT_SETTING,
 		DSA_HEADING_WEIGHT_SETTING,
-		DSA_MENU_WEIGHT_SETTING
+		DSA_MENU_WEIGHT_SETTING,
+		DSA_MENU_UPPERCASE_SETTING,
+		DSA_BUTTON_UPPERCASE_SETTING
 	);
 
 	wp_add_inline_script( 'customize-preview', $js );

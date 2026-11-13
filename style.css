@@ -8069,6 +8069,23 @@ h1, h2, h3, h4, h5, h6,
   text-transform: uppercase;
 }
 
+.has-uppercase-menus .site .navbar .navbar-item,
+.has-uppercase-menus .site .navbar .navbar-link,
+.has-uppercase-menus .site-footer__social-item__label,
+.has-uppercase-menus .footer-widget .menu,
+.has-uppercase-menus .footer-widget .wp-block-navigation {
+  text-transform: uppercase;
+}
+.has-uppercase-menus .site .navbar .site-nav__name {
+  text-transform: none;
+}
+
+.has-uppercase-buttons .button,
+.has-uppercase-buttons .wp-block-button__link,
+.has-uppercase-buttons .wp-element-button {
+  text-transform: uppercase;
+}
+
 .site .navbar .navbar-item,
 .site .navbar .navbar-link,
 .site-footer__social-item__label,
