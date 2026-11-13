@@ -8078,9 +8078,22 @@ h1, h2, h3, h4, h5, h6,
   font-stretch: var(--site-menu-stretch);
 }
 
-.site .navbar .site-nav__name {
-  font-family: var(--site-font-body);
-  font-stretch: normal;
+body.has-body-weight,
+.has-body-weight .content {
+  font-weight: var(--site-weight-body);
+}
+
+.has-heading-weight h1, .has-heading-weight h2, .has-heading-weight h3, .has-heading-weight h4, .has-heading-weight h5, .has-heading-weight h6,
+.has-heading-weight .title {
+  font-weight: var(--site-weight-heading);
+}
+
+.has-menu-weight .site .navbar .navbar-item,
+.has-menu-weight .site .navbar .navbar-link,
+.has-menu-weight .site-footer__social-item__label,
+.has-menu-weight .footer-widget .menu,
+.has-menu-weight .footer-widget .wp-block-navigation {
+  font-weight: var(--site-weight-menu);
 }
 
 html {

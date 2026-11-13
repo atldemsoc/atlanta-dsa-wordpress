@@ -87,6 +87,7 @@ function dsa_customize_register_typography( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( DSA_BASE_FONT_SIZE_SETTING, array(
+		'priority'    => 5,
 		'section'     => 'dsa_typography',
 		'label'       => __( 'Base font size (px)', '_s' ),
 		'description' => sprintf(

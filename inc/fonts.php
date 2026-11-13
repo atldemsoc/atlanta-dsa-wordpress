@@ -2,12 +2,15 @@
 /**
  * Site fonts, set in Customize > Typography:
  * - Body font, Heading font and Menu font (header and footer menus)
+ * - Body, heading and menu font weights
  * - "Uppercase headings" toggle
  *
  * The font choices set CSS variables (--site-font-body, --site-font-heading,
  * --site-heading-stretch, --site-font-menu, --site-menu-stretch) used by
- * style/_fonts.scss. Uppercase headings adds the body class
- * "has-uppercase-headings".
+ * style/_fonts.scss. Weights set --site-weight-body/-heading/-menu and add
+ * the body classes "has-body-weight", "has-heading-weight" and
+ * "has-menu-weight" (otherwise the theme's own weights apply). Uppercase
+ * headings adds the body class "has-uppercase-headings".
  *
  * Manifold DSA, Union Gothic and Geist ship with the theme (fonts/).
  * Styrene B is loaded from files named StyreneB-Regular, StyreneB-Bold and
@@ -22,6 +25,10 @@ const DSA_BODY_FONT_SETTING = 'dsa_body_font';
 const DSA_HEADING_FONT_SETTING = 'dsa_heading_font';
 const DSA_MENU_FONT_SETTING = 'dsa_menu_font';
 const DSA_HEADING_UPPERCASE_SETTING = 'dsa_heading_uppercase';
+const DSA_BODY_WEIGHT_SETTING = 'dsa_body_weight';
+const DSA_HEADING_WEIGHT_SETTING = 'dsa_heading_weight';
+const DSA_MENU_WEIGHT_SETTING = 'dsa_menu_weight';
+const DSA_WEIGHT_THEME_DEFAULT = 'default';
 const DSA_FONT_DEFAULT = 'manifold';
 const DSA_FONT_SAME_AS_BODY = 'same';
 const DSA_STYRENE_CACHE_KEY = 'dsa_styrene_font_files';
@@ -78,6 +85,34 @@ function dsa_sanitize_heading_font( $value ) {
 
 function dsa_sanitize_checkbox( $value ) {
 	return ! empty( $value );
+}
+
+function dsa_font_weight_choices() {
+	return array(
+		300 => __( 'Light (300)', '_s' ),
+		400 => __( 'Regular (400)', '_s' ),
+		500 => __( 'Medium (500)', '_s' ),
+		600 => __( 'Semibold (600)', '_s' ),
+		700 => __( 'Bold (700)', '_s' ),
+		800 => __( 'Extra bold (800)', '_s' ),
+		900 => __( 'Black (900)', '_s' ),
+	);
+}
+
+/** A weight, or "default" for the theme's own weights. */
+function dsa_sanitize_optional_weight( $value ) {
+	return ( DSA_WEIGHT_THEME_DEFAULT !== $value && array_key_exists( (int) $value, dsa_font_weight_choices() ) )
+		? (int) $value
+		: DSA_WEIGHT_THEME_DEFAULT;
+}
+
+/** Saved weights: array( 'body' | 'heading' | 'menu' => int|'default' ). */
+function dsa_get_font_weights() {
+	return array(
+		'body'    => dsa_sanitize_optional_weight( get_theme_mod( DSA_BODY_WEIGHT_SETTING, DSA_WEIGHT_THEME_DEFAULT ) ),
+		'heading' => dsa_sanitize_optional_weight( get_theme_mod( DSA_HEADING_WEIGHT_SETTING, DSA_WEIGHT_THEME_DEFAULT ) ),
+		'menu'    => dsa_sanitize_optional_weight( get_theme_mod( DSA_MENU_WEIGHT_SETTING, DSA_WEIGHT_THEME_DEFAULT ) ),
+	);
 }
 
 /* ------------------------------------------------------------------------
@@ -236,6 +271,7 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( DSA_BODY_FONT_SETTING, array(
+		'priority'    => 10,
 		'section'     => 'dsa_typography',
 		'label'       => __( 'Body font', '_s' ),
 		'description' => __( 'Font for paragraphs, buttons and forms.', '_s' ) . $styrene_note,
@@ -249,6 +285,7 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( DSA_HEADING_FONT_SETTING, array(
+		'priority'    => 12,
 		'section'     => 'dsa_typography',
 		'label'       => __( 'Heading font', '_s' ),
 		'description' => __( 'Font for page titles and headings (H1–H6). Union Gothic is a condensed headline font.', '_s' ),
@@ -262,6 +299,7 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( DSA_HEADING_UPPERCASE_SETTING, array(
+		'priority'    => 14,
 		'section' => 'dsa_typography',
 		'label'   => __( 'Uppercase headings', '_s' ),
 		'description' => __( 'Show all page titles and headings (H1–H6) in capital letters.', '_s' ),
@@ -274,12 +312,61 @@ function dsa_customize_register_fonts( $wp_customize ) {
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( DSA_MENU_FONT_SETTING, array(
+		'priority'    => 15,
 		'section'     => 'dsa_typography',
 		'label'       => __( 'Menu font', '_s' ),
-		'description' => __( 'Font for the menus in the header bar and footer. The "Atlanta DSA" name next to the logo keeps the body font.', '_s' ),
+		'description' => __( 'Font for the menus in the header bar and footer, including the "Atlanta DSA" name next to the logo.', '_s' ),
 		'type'        => 'select',
 		'choices'     => $other_choices,
 	) );
+
+	// Font weights.
+	$weights      = dsa_font_weight_choices();
+	$weight_note  = __( 'Fonts without that exact weight use the nearest one (Styrene B has 400, 700 and 900; Union Gothic starts at 400).', '_s' );
+	$theme_weight = array( DSA_WEIGHT_THEME_DEFAULT => __( 'Theme default', '_s' ) ) + $weights;
+
+	$weight_controls = array(
+		DSA_BODY_WEIGHT_SETTING    => array(
+			'label'       => __( 'Body font weight', '_s' ),
+			'description' => __( 'Theme default: page content 500, other text 400. Bold text stays bold.', '_s' ) . ' ' . $weight_note,
+			'default'     => DSA_WEIGHT_THEME_DEFAULT,
+			'sanitize'    => 'dsa_sanitize_optional_weight',
+			'choices'     => $theme_weight,
+			'priority'    => 11,
+		),
+		DSA_HEADING_WEIGHT_SETTING => array(
+			'label'       => __( 'Heading font weight', '_s' ),
+			'description' => __( 'Theme default: page titles 800, other headings 700. Weights set on a block in the editor still win.', '_s' ),
+			'default'     => DSA_WEIGHT_THEME_DEFAULT,
+			'sanitize'    => 'dsa_sanitize_optional_weight',
+			'choices'     => $theme_weight,
+			'priority'    => 13,
+		),
+		DSA_MENU_WEIGHT_SETTING    => array(
+			'label'       => __( 'Menu font weight', '_s' ),
+			'description' => __( 'Theme default: 700. The "Atlanta DSA" name keeps its logo weights.', '_s' ),
+			'default'     => DSA_WEIGHT_THEME_DEFAULT,
+			'sanitize'    => 'dsa_sanitize_optional_weight',
+			'choices'     => $theme_weight,
+			'priority'    => 16,
+		),
+	);
+
+	foreach ( $weight_controls as $id => $control ) {
+		$wp_customize->add_setting( $id, array(
+			'default'           => $control['default'],
+			'sanitize_callback' => $control['sanitize'],
+			'transport'         => 'postMessage',
+		) );
+		$wp_customize->add_control( $id, array(
+			'section'     => 'dsa_typography',
+			'label'       => $control['label'],
+			'description' => $control['description'],
+			'type'        => 'select',
+			'choices'     => $control['choices'],
+			'priority'    => $control['priority'],
+		) );
+	}
 }
 // After the Typography section is registered in inc/customizer.php.
 add_action( 'customize_register', 'dsa_customize_register_fonts', 20 );
@@ -332,6 +419,18 @@ function dsa_fonts_inline_css() {
 		dsa_sanitize_secondary_font( get_theme_mod( DSA_HEADING_FONT_SETTING, DSA_FONT_SAME_AS_BODY ) ),
 		dsa_sanitize_secondary_font( get_theme_mod( DSA_MENU_FONT_SETTING, DSA_FONT_SAME_AS_BODY ) )
 	);
+
+	$weights = dsa_get_font_weights();
+	$weight_vars = array();
+	foreach ( array( 'body', 'heading', 'menu' ) as $role ) {
+		if ( DSA_WEIGHT_THEME_DEFAULT !== $weights[ $role ] ) {
+			$weight_vars[] = "--site-weight-{$role}:" . $weights[ $role ];
+		}
+	}
+	if ( $weight_vars ) {
+		$vars = implode( ';', array_filter( array( $vars, implode( ';', $weight_vars ) ) ) );
+	}
+
 	if ( $vars ) {
 		$css .= ':root{' . $vars . ';}';
 	}
@@ -344,6 +443,12 @@ add_action( 'wp_enqueue_scripts', 'dsa_fonts_inline_css', 20 );
 function dsa_heading_uppercase_body_class( $classes ) {
 	if ( get_theme_mod( DSA_HEADING_UPPERCASE_SETTING, false ) ) {
 		$classes[] = 'has-uppercase-headings';
+	}
+	$weights = dsa_get_font_weights();
+	foreach ( array( 'body', 'heading', 'menu' ) as $role ) {
+		if ( DSA_WEIGHT_THEME_DEFAULT !== $weights[ $role ] ) {
+			$classes[] = "has-{$role}-weight";
+		}
 	}
 	return $classes;
 }
@@ -390,12 +495,32 @@ function dsa_fonts_preview_js() {
 					document.body.classList.toggle('has-uppercase-headings', !!on);
 				});
 			});
+			var weights = %6\$s;
+			function bindWeight(settingId, role) {
+				wp.customize(settingId, function (setting) {
+					setting.bind(function (value) {
+						var weight = parseInt(value, 10);
+						var on = weights.indexOf(weight) !== -1;
+						document.body.classList.toggle('has-' + role + '-weight', on);
+						if (on) {
+							root.style.setProperty('--site-weight-' + role, String(weight));
+						}
+					});
+				});
+			}
+			bindWeight('%7\$s', 'body');
+			bindWeight('%8\$s', 'heading');
+			bindWeight('%9\$s', 'menu');
 		})(document.documentElement);",
 		DSA_BODY_FONT_SETTING,
 		DSA_FONT_DEFAULT,
 		DSA_HEADING_FONT_SETTING,
 		DSA_MENU_FONT_SETTING,
-		DSA_HEADING_UPPERCASE_SETTING
+		DSA_HEADING_UPPERCASE_SETTING,
+		wp_json_encode( array_keys( dsa_font_weight_choices() ) ),
+		DSA_BODY_WEIGHT_SETTING,
+		DSA_HEADING_WEIGHT_SETTING,
+		DSA_MENU_WEIGHT_SETTING
 	);
 
 	wp_add_inline_script( 'customize-preview', $js );

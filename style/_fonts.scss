@@ -78,8 +78,28 @@ h1, h2, h3, h4, h5, h6,
 	font-stretch:var(--site-menu-stretch);
 }
 
-// The chapter name next to the logo is part of the logo: keep the body font.
-.site .navbar .site-nav__name {
-	font-family:var(--site-font-body);
-	font-stretch:normal;
+// Customize > Typography font weights. Body text, headings and menus keep
+// the theme's own weights unless a weight is chosen (the body class is added
+// only then). Page content (.content) is 500 by default, other text 400.
+// The "Atlanta DSA" name keeps its logo weights.
+body.has-body-weight,
+.has-body-weight .content {
+	font-weight:var(--site-weight-body);
+}
+
+.has-heading-weight {
+	h1, h2, h3, h4, h5, h6,
+	.title {
+		font-weight:var(--site-weight-heading);
+	}
+}
+
+.has-menu-weight {
+	.site .navbar .navbar-item,
+	.site .navbar .navbar-link,
+	.site-footer__social-item__label,
+	.footer-widget .menu,
+	.footer-widget .wp-block-navigation {
+		font-weight:var(--site-weight-menu);
+	}
 }
