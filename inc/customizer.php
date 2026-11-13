@@ -200,7 +200,9 @@ function dsa_customizer_preview_js() {
 				setting.bind(function (value) {
 					var height = Math.round(parseFloat(value));
 					if (isNaN(height) || height <= 0) {
-						root.style.removeProperty('--site-navbar-height');
+						// 'initial' unsets the variable so the CSS fallbacks
+						// (automatic height) apply, even over a saved value.
+						root.style.setProperty('--site-navbar-height', 'initial');
 						return;
 					}
 					height = Math.min(%7\$s, Math.max(%6\$s, height));

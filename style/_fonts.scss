@@ -1,0 +1,60 @@
+// Site fonts. Manifold DSA's @font-face rules come from dsa-bulma.
+// The fonts used are picked in Customize > Typography (inc/fonts.php), which
+// ("... Web" family names never match fonts installed on a visitor's computer,
+// so the site always shows the files it serves.)
+// sets the variables below. Fonts that aren't used are never downloaded.
+
+// Union Gothic (c) 2022 Matthew Anderson, CC BY-NC-ND 4.0, served unmodified.
+// See fonts/union-gothic/LICENSE.txt.
+@font-face {
+	font-family:'Union Gothic Web';
+	src:url("fonts/union-gothic/union_gothic-variable.ttf") format("truetype");
+	font-weight:400 1000;
+	font-stretch:50% 200%;
+	font-style:normal;
+	font-display:swap;
+}
+
+// Geist, SIL Open Font License 1.1. See fonts/geist/OFL.txt.
+@font-face {
+	font-family:'Geist Web';
+	src:url("fonts/geist/Geist-Variable.woff2") format("woff2");
+	font-weight:100 900;
+	font-style:normal;
+	font-display:swap;
+}
+
+@font-face {
+	font-family:'Geist Web';
+	src:url("fonts/geist/Geist-Italic-Variable.woff2") format("woff2");
+	font-weight:100 900;
+	font-style:italic;
+	font-display:swap;
+}
+
+:root {
+	--site-font-body:"ManifoldDSA", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	--site-font-heading:var(--site-font-body);
+	--site-heading-stretch:normal;
+}
+
+body,
+button,
+input,
+optgroup,
+select,
+textarea {
+	font-family:var(--site-font-body);
+}
+
+.is-family-primary,
+.is-family-secondary,
+.is-family-sans-serif {
+	font-family:var(--site-font-body) !important;
+}
+
+h1, h2, h3, h4, h5, h6,
+.title {
+	font-family:var(--site-font-heading);
+	font-stretch:var(--site-heading-stretch);
+}

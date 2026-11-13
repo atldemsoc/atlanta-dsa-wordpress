@@ -1,0 +1,12 @@
+Union Gothic
+Copyright 2022 Matthew Anderson
+https://wehtt.am/fonts/
+
+Licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
+International (CC BY-NC-ND 4.0): https://creativecommons.org/licenses/by-nc-nd/4.0/
+(as stated in the font file's own license metadata).
+
+union_gothic-variable.ttf is included unmodified, exactly as distributed by
+the author in union_gothic.zip. It is used here for non-commercial purposes
+(Atlanta DSA's chapter website). Do not modify, convert or subset this file,
+and do not use it for commercial purposes without the author's permission.
