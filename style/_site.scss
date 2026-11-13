@@ -78,14 +78,16 @@
 			justify-content: center;
 		}
 
-		// Wide: use most of the screen, beyond Bulma's container widths,
-		// keeping side margins that grow with the viewport.
-		&.container.is-wide {
-			max-width:1920px;
+		// Wide: the content lines up with the header/footer content edges
+		// (the same Bulma .container), plus an optional per-page margin
+		// (--wide-page-margin) that is capped on small screens.
+		&.container.is-wide > .site__content > .section {
+			padding-left:calc(1.5rem + min(var(--wide-page-margin, 0px), 5vw));
+			padding-right:calc(1.5rem + min(var(--wide-page-margin, 0px), 5vw));
 
-			> .site__content > .section {
-				padding-left:clamp(1.5rem, 4vw, 5rem);
-				padding-right:clamp(1.5rem, 4vw, 5rem);
+			@include from($desktop) {
+				padding-left:min(var(--wide-page-margin, 0px), 5vw);
+				padding-right:min(var(--wide-page-margin, 0px), 5vw);
 			}
 		}
 	}

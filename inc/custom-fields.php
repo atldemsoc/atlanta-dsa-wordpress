@@ -20,6 +20,7 @@ function my_acf_add_local_field_groups() {
 	acf_add_local_field_group(generate_duo_config('template-four-duos.php', DUO_SLOT_TERTIARY, 'Block 3: Bottom'), DUO_TYPE_DARK);
 
 	acf_add_local_field_group(get_page_display_config(PAGE_LAYOUT_TEMPLATES));
+	acf_add_local_field_group(get_wide_page_config('template-wide.php'));
 }
 
 add_action('acf/init', 'my_acf_add_local_field_groups');

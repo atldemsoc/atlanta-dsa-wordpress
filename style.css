@@ -8064,11 +8064,13 @@ a.has-text-danger:hover, a.has-text-danger:focus {
     justify-content: space-between; }
     .site__main.is-centered, .site__main.is-wide {
       justify-content: center; }
-    .site__main.container.is-wide {
-      max-width: 1920px; }
-      .site__main.container.is-wide > .site__content > .section {
-        padding-left: clamp(1.5rem, 4vw, 5rem);
-        padding-right: clamp(1.5rem, 4vw, 5rem); }
+    .site__main.container.is-wide > .site__content > .section {
+      padding-left: calc(1.5rem + min(var(--wide-page-margin, 0px), 5vw));
+      padding-right: calc(1.5rem + min(var(--wide-page-margin, 0px), 5vw)); }
+      @media screen and (min-width: 1024px) {
+        .site__main.container.is-wide > .site__content > .section {
+          padding-left: min(var(--wide-page-margin, 0px), 5vw);
+          padding-right: min(var(--wide-page-margin, 0px), 5vw); } }
   .site__content {
     flex: 1 1 auto;
     display: flex;

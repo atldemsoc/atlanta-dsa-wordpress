@@ -15,6 +15,8 @@ const HEADER_HERO_VIDEO_MP4_KEY = 'header_hero_video_mp4';
 const HEADER_HERO_VIDEO_WEBM_KEY = 'header_hero_video_webm';
 
 const PAGE_HIDE_TITLE_KEY = 'page_hide_title';
+const PAGE_WIDE_MARGIN_KEY = 'page_wide_margin';
+const PAGE_WIDE_MARGIN_MAX = 300;
 
 // Page templates that use the standard page layout (title + content) and
 // therefore get the "Hide page title" option.
