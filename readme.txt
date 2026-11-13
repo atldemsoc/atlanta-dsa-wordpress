@@ -36,6 +36,3 @@ _s includes support for Infinite Scroll in Jetpack.
 
 * Based on Underscores https://underscores.me/, (C) 2012-2017 Automattic, Inc., [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html)
 * normalize.css https://necolas.github.io/normalize.css/, (C) 2012-2016 Nicolas Gallagher and Jonathan Neal, [MIT](https://opensource.org/licenses/MIT)
-* Union Gothic font https://wehtt.am/fonts/, (C) 2022 Matthew Anderson, [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) (included unmodified; see fonts/union-gothic/LICENSE.txt)
-* Geist font https://github.com/vercel/geist-font, (C) The Geist Project Authors, [SIL Open Font License 1.1](https://openfontlicense.org) (see fonts/geist/OFL.txt)
-* Styrene B (Commercial Type) is NOT included: it needs a web license. If one is held, place its web font files in wp-content/uploads/fonts/styrene/ (see inc/fonts.php).

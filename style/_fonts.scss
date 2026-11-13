@@ -4,8 +4,7 @@
 // so the site always shows the files it serves.)
 // sets the variables below. Fonts that aren't used are never downloaded.
 
-// Union Gothic (c) 2022 Matthew Anderson, CC BY-NC-ND 4.0, served unmodified.
-// See fonts/union-gothic/LICENSE.txt.
+// Union Gothic, by Matthew Anderson (https://wehtt.am/fonts/).
 @font-face {
 	font-family:'Union Gothic Web';
 	src:url("fonts/union-gothic/union_gothic-variable.ttf") format("truetype");
@@ -15,7 +14,7 @@
 	font-display:swap;
 }
 
-// Geist, SIL Open Font License 1.1. See fonts/geist/OFL.txt.
+// Geist (https://github.com/vercel/geist-font).
 @font-face {
 	font-family:'Geist Web';
 	src:url("fonts/geist/Geist-Variable.woff2") format("woff2");
@@ -36,6 +35,8 @@
 	--site-font-body:"ManifoldDSA", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 	--site-font-heading:var(--site-font-body);
 	--site-heading-stretch:normal;
+	--site-font-menu:var(--site-font-body);
+	--site-menu-stretch:normal;
 }
 
 body,
@@ -57,4 +58,28 @@ h1, h2, h3, h4, h5, h6,
 .title {
 	font-family:var(--site-font-heading);
 	font-stretch:var(--site-heading-stretch);
+}
+
+// Customize > Typography > Uppercase headings.
+.has-uppercase-headings {
+	h1, h2, h3, h4, h5, h6,
+	.title {
+		text-transform:uppercase;
+	}
+}
+
+// Customize > Typography > Menu font: header bar and footer menus.
+.site .navbar .navbar-item,
+.site .navbar .navbar-link,
+.site-footer__social-item__label,
+.footer-widget .menu,
+.footer-widget .wp-block-navigation {
+	font-family:var(--site-font-menu);
+	font-stretch:var(--site-menu-stretch);
+}
+
+// The chapter name next to the logo is part of the logo: keep the body font.
+.site .navbar .site-nav__name {
+	font-family:var(--site-font-body);
+	font-stretch:normal;
 }
