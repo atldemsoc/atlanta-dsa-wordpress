@@ -8024,13 +8024,20 @@ html {
   align-items: stretch; }
   .site .navbar {
     position: relative; }
+    .site .navbar,
+    .site .navbar > .container,
+    .site .navbar .navbar-brand {
+      min-height: var(--site-navbar-height, 3.25rem); }
+    .site .navbar .navbar-burger {
+      height: var(--site-navbar-height, 3.25rem); }
   .site-nav__logo {
-    width: 2.5rem;
+    width: min(2.5rem, calc(var(--site-navbar-height, 3.5rem) - 1rem));
     height: auto;
     max-height: none !important;
     margin-right: .5rem; }
   .site-nav__name {
     font-size: 1.4em;
+    line-height: 1.2;
     font-weight: 500;
     letter-spacing: -.03em; }
     .site-nav__name-dsa {

@@ -106,33 +106,116 @@ function dsa_customize_register_typography( $wp_customize ) {
 }
 add_action( 'customize_register', 'dsa_customize_register_typography' );
 
+/**
+ * Header Bar: height of the red navigation bar at the top of every page.
+ *
+ * Exposed to CSS as --site-navbar-height. 0 means automatic (the theme's
+ * default height). Shorter bars shrink the logo to fit.
+ */
+const DSA_NAVBAR_HEIGHT_SETTING = 'dsa_navbar_height';
+const DSA_NAVBAR_HEIGHT_MIN = 48;
+const DSA_NAVBAR_HEIGHT_MAX = 120;
+
+function dsa_sanitize_navbar_height( $value ) {
+	if ( ! is_numeric( $value ) || (int) $value <= 0 ) {
+		return 0; // automatic
+	}
+	return max( DSA_NAVBAR_HEIGHT_MIN, min( DSA_NAVBAR_HEIGHT_MAX, (int) round( (float) $value ) ) );
+}
+
+function dsa_customize_register_header_bar( $wp_customize ) {
+	$wp_customize->add_section( 'dsa_header_bar', array(
+		'title'    => __( 'Header Bar', '_s' ),
+		'priority' => 41,
+	) );
+
+	$wp_customize->add_setting( DSA_NAVBAR_HEIGHT_SETTING, array(
+		'default'           => 0,
+		'sanitize_callback' => 'dsa_sanitize_navbar_height',
+		'transport'         => 'postMessage',
+	) );
+
+	$wp_customize->add_control( DSA_NAVBAR_HEIGHT_SETTING, array(
+		'section'     => 'dsa_header_bar',
+		'label'       => __( 'Header bar height (px)', '_s' ),
+		'description' => sprintf(
+			/* translators: 1: min height, 2: max height */
+			__( 'Height of the red menu bar at the top of the site. 0 = automatic (the default, about 56px). Between %1$s and %2$s; the logo shrinks to fit shorter bars.', '_s' ),
+			DSA_NAVBAR_HEIGHT_MIN,
+			DSA_NAVBAR_HEIGHT_MAX
+		),
+		'type'        => 'number',
+		'input_attrs' => array(
+			'min'  => 0,
+			'max'  => DSA_NAVBAR_HEIGHT_MAX,
+			'step' => 1,
+		),
+	) );
+}
+add_action( 'customize_register', 'dsa_customize_register_header_bar' );
+
 function dsa_get_base_font_size() {
 	return dsa_sanitize_base_font_size( get_theme_mod( DSA_BASE_FONT_SIZE_SETTING, DSA_BASE_FONT_SIZE_DEFAULT ) );
 }
 
 /**
- * Print the font size variable after the theme stylesheet.
+ * Print the Customizer CSS variables after the theme stylesheet. Only
+ * changed settings are printed; style.css has the defaults as fallbacks.
  */
-function dsa_typography_inline_css() {
+function dsa_customizer_inline_css() {
+	$vars = array();
+
 	$size = dsa_get_base_font_size();
-	if ( (float) $size === (float) DSA_BASE_FONT_SIZE_DEFAULT ) {
-		return; // the stylesheet already defaults to 16px
+	if ( (float) $size !== (float) DSA_BASE_FONT_SIZE_DEFAULT ) {
+		$vars[] = '--site-font-size:' . $size . 'px';
 	}
-	wp_add_inline_style( '_s-style', ':root{--site-font-size:' . $size . 'px;}' );
+
+	$navbar_height = dsa_sanitize_navbar_height( get_theme_mod( DSA_NAVBAR_HEIGHT_SETTING, 0 ) );
+	if ( $navbar_height > 0 ) {
+		$vars[] = '--site-navbar-height:' . $navbar_height . 'px';
+	}
+
+	if ( $vars ) {
+		wp_add_inline_style( '_s-style', ':root{' . implode( ';', $vars ) . ';}' );
+	}
 }
-add_action( 'wp_enqueue_scripts', 'dsa_typography_inline_css', 20 );
+add_action( 'wp_enqueue_scripts', 'dsa_customizer_inline_css', 20 );
 
 /**
- * Live preview in the Customizer without a page reload.
+ * Live preview in the Customizer without a page reload. Mirrors the PHP
+ * sanitizers so the preview matches what is saved.
  */
-function dsa_typography_preview_js() {
-	wp_add_inline_script(
-		'customize-preview',
-		"wp.customize('" . DSA_BASE_FONT_SIZE_SETTING . "', function (setting) {
-			setting.bind(function (size) {
-				document.documentElement.style.setProperty('--site-font-size', parseFloat(size) + 'px');
+function dsa_customizer_preview_js() {
+	$js = sprintf(
+		"(function (root) {
+			wp.customize('%1\$s', function (setting) {
+				setting.bind(function (value) {
+					var size = Math.round(parseFloat(value) * 2) / 2;
+					if (isNaN(size)) { size = %2\$s; }
+					size = Math.min(%4\$s, Math.max(%3\$s, size));
+					root.style.setProperty('--site-font-size', size + 'px');
+				});
 			});
-		});"
+			wp.customize('%5\$s', function (setting) {
+				setting.bind(function (value) {
+					var height = Math.round(parseFloat(value));
+					if (isNaN(height) || height <= 0) {
+						root.style.removeProperty('--site-navbar-height');
+						return;
+					}
+					height = Math.min(%7\$s, Math.max(%6\$s, height));
+					root.style.setProperty('--site-navbar-height', height + 'px');
+				});
+			});
+		})(document.documentElement);",
+		DSA_BASE_FONT_SIZE_SETTING,
+		DSA_BASE_FONT_SIZE_DEFAULT,
+		DSA_BASE_FONT_SIZE_MIN,
+		DSA_BASE_FONT_SIZE_MAX,
+		DSA_NAVBAR_HEIGHT_SETTING,
+		DSA_NAVBAR_HEIGHT_MIN,
+		DSA_NAVBAR_HEIGHT_MAX
 	);
+	wp_add_inline_script( 'customize-preview', $js );
 }
-add_action( 'customize_preview_init', 'dsa_typography_preview_js' );
+add_action( 'customize_preview_init', 'dsa_customizer_preview_js' );

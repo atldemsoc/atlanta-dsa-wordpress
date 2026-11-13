@@ -12,13 +12,26 @@ html {
   flex-direction: column;
   align-items: stretch;
 
+	// Header bar height can be set in Customize > Header Bar, which sets
+	// --site-navbar-height. Without it, the fallbacks match Bulma's defaults.
 	.navbar {
 		position:relative;
+
+		&,
+		> .container,
+		.navbar-brand {
+			min-height:var(--site-navbar-height, 3.25rem);
+		}
+
+		.navbar-burger {
+			height:var(--site-navbar-height, 3.25rem);
+		}
 	}
 
 	&-nav {
 		&__logo {
-			width:2.5rem;
+			// Shrinks with a short header bar (logo + 1rem item padding).
+			width:min(2.5rem, calc(var(--site-navbar-height, 3.5rem) - 1rem));
 			height:auto;
 			max-height:none !important;
 			margin-right:.5rem;
@@ -26,6 +39,7 @@ html {
 
 		&__name {
 			font-size:1.4em;
+			line-height:1.2;
 			font-weight:$weight-medium;
 			letter-spacing: -.03em;
 
