@@ -1,18 +1,14 @@
 <?php
 /**
- * Site fonts, set in Customize > Typography:
- * - Body, Heading, Menu (header and footer menus) and Button fonts
- * - Body, heading, menu and button font weights
- * - "Uppercase headings", "Uppercase menus" and "Uppercase buttons" toggles
+ * Site fonts, set in Customize > Typography: a font and a weight for body
+ * text, headings, menus (header and footer) and buttons, plus "Uppercase"
+ * toggles for headings, menus and buttons.
  *
- * The font choices set CSS variables (--site-font-body, --site-font-heading,
- * --site-heading-stretch, --site-font-menu, --site-menu-stretch,
- * --site-font-button, --site-button-stretch) used by
- * style/_fonts.scss. Weights set --site-weight-body/-heading/-menu/-button
- * and add the body classes "has-<role>-weight" (otherwise the theme's own
- * weights apply). Uppercase
- * headings / menus / buttons add the body classes "has-uppercase-headings",
- * "has-uppercase-menus" and "has-uppercase-buttons".
+ * Fonts set --site-font-<role> (and --site-<role>-stretch for condensed
+ * fonts). Weights set --site-weight-<role> and add the body class
+ * "has-<role>-weight"; uppercase adds "has-uppercase-<role>s". Unchanged
+ * settings print nothing, so the theme's own styles apply. The CSS is in
+ * style/_fonts.scss.
  *
  * Manifold DSA, Union Gothic and Geist ship with the theme (fonts/).
  * Styrene B is loaded from files named StyreneB-Regular, StyreneB-Bold and
@@ -64,7 +60,7 @@ function dsa_font_choices() {
 		),
 		'union'    => array(
 			'label'   => 'Union Gothic',
-			'stack'   => '"Union Gothic Web", "Arial Narrow", sans-serif-condensed, sans-serif',
+			'stack'   => '"Union Gothic Web", "Arial Narrow", sans-serif',
 			// Condensed width, as on socialists.nyc.
 			'stretch' => '83%',
 			'body'    => false,
@@ -77,20 +73,11 @@ function dsa_sanitize_body_font( $value ) {
 	return ( isset( $choices[ $value ] ) && $choices[ $value ]['body'] ) ? $value : DSA_FONT_DEFAULT;
 }
 
-/** For the heading and menu fonts, which can also be "same as body". */
+/** Heading, menu and button fonts: a font key, or "same as body". */
 function dsa_sanitize_secondary_font( $value ) {
 	return ( DSA_FONT_SAME_AS_BODY === $value || array_key_exists( $value, dsa_font_choices() ) )
 		? $value
 		: DSA_FONT_SAME_AS_BODY;
-}
-
-/** Kept for compatibility with the earlier name. */
-function dsa_sanitize_heading_font( $value ) {
-	return dsa_sanitize_secondary_font( $value );
-}
-
-function dsa_sanitize_checkbox( $value ) {
-	return ! empty( $value );
 }
 
 function dsa_font_weight_choices() {
@@ -132,6 +119,8 @@ const DSA_FONT_FORMATS = array( 'woff2' => 'woff2', 'woff' => 'woff', 'otf' => '
 /**
  * Styrene B files keyed by weight: uploads/fonts/styrene/ first, then the
  * Media Library. Each weight uses the first format found (woff2, woff, otf).
+ * Cached for a day; uploading or deleting media, or opening the Customizer,
+ * clears the cache.
  */
 function dsa_styrene_font_files() {
 	$cached = get_transient( DSA_STYRENE_CACHE_KEY );
@@ -234,9 +223,10 @@ function dsa_allow_font_uploads( $mimes ) {
 add_filter( 'upload_mimes', 'dsa_allow_font_uploads' );
 
 /**
- * WordPress also checks a file's real type, which it often reports
- * differently for fonts (e.g. "application/vnd.ms-opentype"); accept font
- * files by extension for administrators.
+ * WordPress also checks a file's real type, which servers report in many
+ * ways for fonts (e.g. "application/vnd.ms-opentype"), and then rejects it.
+ * For administrators, accept a font extension when the detected type is one
+ * a font file can have.
  */
 function dsa_check_font_filetype( $data, $file, $filename, $mimes ) {
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -244,10 +234,28 @@ function dsa_check_font_filetype( $data, $file, $filename, $mimes ) {
 	}
 	$ext   = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
 	$fonts = array( 'woff2' => 'font/woff2', 'woff' => 'font/woff', 'otf' => 'font/otf' );
-	if ( isset( $fonts[ $ext ] ) ) {
-		$data['ext']  = $ext;
-		$data['type'] = $fonts[ $ext ];
+	if ( ! isset( $fonts[ $ext ] ) ) {
+		return $data;
 	}
+
+	$font_types = array(
+		'font/woff2', 'font/woff', 'font/otf', 'font/sfnt', 'font/ttf',
+		'application/font-woff', 'application/font-woff2', 'application/font-sfnt',
+		'application/x-font-otf', 'application/vnd.ms-opentype', 'application/octet-stream',
+	);
+	if ( function_exists( 'finfo_open' ) && is_readable( $file ) ) {
+		$finfo     = finfo_open( FILEINFO_MIME_TYPE );
+		$real_type = $finfo ? finfo_file( $finfo, $file ) : false;
+		if ( $finfo ) {
+			finfo_close( $finfo );
+		}
+		if ( $real_type && ! in_array( $real_type, $font_types, true ) ) {
+			return $data; // Not a font file: leave WordPress's rejection.
+		}
+	}
+
+	$data['ext']  = $ext;
+	$data['type'] = $fonts[ $ext ];
 	return $data;
 }
 add_filter( 'wp_check_filetype_and_ext', 'dsa_check_font_filetype', 10, 4 );
@@ -483,7 +491,8 @@ function dsa_fonts_inline_css() {
 }
 add_action( 'wp_enqueue_scripts', 'dsa_fonts_inline_css', 20 );
 
-function dsa_heading_uppercase_body_class( $classes ) {
+/** Body classes for the uppercase and weight settings. */
+function dsa_typography_body_classes( $classes ) {
 	if ( get_theme_mod( DSA_HEADING_UPPERCASE_SETTING, false ) ) {
 		$classes[] = 'has-uppercase-headings';
 	}
@@ -501,7 +510,7 @@ function dsa_heading_uppercase_body_class( $classes ) {
 	}
 	return $classes;
 }
-add_filter( 'body_class', 'dsa_heading_uppercase_body_class' );
+add_filter( 'body_class', 'dsa_typography_body_classes' );
 
 /**
  * Live preview of font changes in the Customizer. Always sets explicit

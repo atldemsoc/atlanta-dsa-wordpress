@@ -74,6 +74,15 @@ function dsa_sanitize_base_font_size( $value ) {
 	return max( DSA_BASE_FONT_SIZE_MIN, min( DSA_BASE_FONT_SIZE_MAX, $value ) );
 }
 
+function dsa_get_base_font_size() {
+	return dsa_sanitize_base_font_size( get_theme_mod( DSA_BASE_FONT_SIZE_SETTING, DSA_BASE_FONT_SIZE_DEFAULT ) );
+}
+
+/** Shared sanitizer for checkbox settings (also used by inc/fonts.php). */
+function dsa_sanitize_checkbox( $value ) {
+	return ! empty( $value );
+}
+
 function dsa_customize_register_typography( $wp_customize ) {
 	$wp_customize->add_section( 'dsa_typography', array(
 		'title'    => __( 'Typography', '_s' ),
@@ -186,10 +195,6 @@ function dsa_sanitize_site_name( $value ) {
 	return sanitize_text_field( $value );
 }
 
-function dsa_sanitize_bool( $value ) {
-	return ! empty( $value );
-}
-
 function dsa_customize_register_site_name( $wp_customize ) {
 	$wp_customize->add_setting( DSA_SITE_NAME_SETTING, array(
 		'default'           => dsa_default_site_name(),
@@ -207,7 +212,7 @@ function dsa_customize_register_site_name( $wp_customize ) {
 
 	$wp_customize->add_setting( DSA_SITE_NAME_BOLD_SETTING, array(
 		'default'           => true,
-		'sanitize_callback' => 'dsa_sanitize_bool',
+		'sanitize_callback' => 'dsa_sanitize_checkbox',
 		'transport'         => 'postMessage',
 	) );
 
@@ -229,10 +234,6 @@ function dsa_customize_register_site_name( $wp_customize ) {
 	}
 }
 add_action( 'customize_register', 'dsa_customize_register_site_name' );
-
-function dsa_get_base_font_size() {
-	return dsa_sanitize_base_font_size( get_theme_mod( DSA_BASE_FONT_SIZE_SETTING, DSA_BASE_FONT_SIZE_DEFAULT ) );
-}
 
 /**
  * Print the Customizer CSS variables after the theme stylesheet. Only

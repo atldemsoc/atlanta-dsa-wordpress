@@ -8060,72 +8060,51 @@ textarea {
   font-family: var(--site-font-body) !important;
 }
 
-h1, h2, h3, h4, h5, h6,
-.title {
+body.has-body-weight,
+.has-body-weight .content {
+  font-weight: var(--site-weight-body);
+}
+
+h1, h2, h3, h4, h5, h6, .title {
   font-family: var(--site-font-heading);
   font-stretch: var(--site-heading-stretch);
 }
 
-.has-uppercase-headings h1, .has-uppercase-headings h2, .has-uppercase-headings h3, .has-uppercase-headings h4, .has-uppercase-headings h5, .has-uppercase-headings h6,
-.has-uppercase-headings .title {
+.has-heading-weight h1, .has-heading-weight h2, .has-heading-weight h3, .has-heading-weight h4, .has-heading-weight h5, .has-heading-weight h6, .has-heading-weight .title {
+  font-weight: var(--site-weight-heading);
+}
+
+.has-uppercase-headings h1, .has-uppercase-headings h2, .has-uppercase-headings h3, .has-uppercase-headings h4, .has-uppercase-headings h5, .has-uppercase-headings h6, .has-uppercase-headings .title {
   text-transform: uppercase;
 }
 
-.has-uppercase-menus .site .navbar .navbar-item,
-.has-uppercase-menus .site .navbar .navbar-link,
-.has-uppercase-menus .site-footer__social-item__label,
-.has-uppercase-menus .footer-widget .menu,
-.has-uppercase-menus .footer-widget .wp-block-navigation {
+.site .navbar .navbar-item, .site .navbar .navbar-link, .site-footer__social-item__label, .footer-widget .menu, .footer-widget .wp-block-navigation {
+  font-family: var(--site-font-menu);
+  font-stretch: var(--site-menu-stretch);
+}
+
+.has-menu-weight .site .navbar .navbar-item, .has-menu-weight .site .navbar .navbar-link, .has-menu-weight .site-footer__social-item__label, .has-menu-weight .footer-widget .menu, .has-menu-weight .footer-widget .wp-block-navigation {
+  font-weight: var(--site-weight-menu);
+}
+
+.has-uppercase-menus .site .navbar .navbar-item, .has-uppercase-menus .site .navbar .navbar-link, .has-uppercase-menus .site-footer__social-item__label, .has-uppercase-menus .footer-widget .menu, .has-uppercase-menus .footer-widget .wp-block-navigation {
   text-transform: uppercase;
 }
 .has-uppercase-menus .site .navbar .site-nav__name {
   text-transform: none;
 }
 
-.button,
-.wp-block-button__link,
-.wp-element-button {
+.button, .wp-block-button__link, .wp-element-button {
   font-family: var(--site-font-button);
   font-stretch: var(--site-button-stretch);
 }
 
-.has-button-weight .button,
-.has-button-weight .wp-block-button__link,
-.has-button-weight .wp-element-button {
+.has-button-weight .button, .has-button-weight .wp-block-button__link, .has-button-weight .wp-element-button {
   font-weight: var(--site-weight-button);
 }
 
-.has-uppercase-buttons .button,
-.has-uppercase-buttons .wp-block-button__link,
-.has-uppercase-buttons .wp-element-button {
+.has-uppercase-buttons .button, .has-uppercase-buttons .wp-block-button__link, .has-uppercase-buttons .wp-element-button {
   text-transform: uppercase;
-}
-
-.site .navbar .navbar-item,
-.site .navbar .navbar-link,
-.site-footer__social-item__label,
-.footer-widget .menu,
-.footer-widget .wp-block-navigation {
-  font-family: var(--site-font-menu);
-  font-stretch: var(--site-menu-stretch);
-}
-
-body.has-body-weight,
-.has-body-weight .content {
-  font-weight: var(--site-weight-body);
-}
-
-.has-heading-weight h1, .has-heading-weight h2, .has-heading-weight h3, .has-heading-weight h4, .has-heading-weight h5, .has-heading-weight h6,
-.has-heading-weight .title {
-  font-weight: var(--site-weight-heading);
-}
-
-.has-menu-weight .site .navbar .navbar-item,
-.has-menu-weight .site .navbar .navbar-link,
-.has-menu-weight .site-footer__social-item__label,
-.has-menu-weight .footer-widget .menu,
-.has-menu-weight .footer-widget .wp-block-navigation {
-  font-weight: var(--site-weight-menu);
 }
 
 html {

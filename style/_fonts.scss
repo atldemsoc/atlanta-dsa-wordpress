@@ -1,8 +1,10 @@
-// Site fonts. Manifold DSA's @font-face rules come from dsa-bulma.
-// The fonts used are picked in Customize > Typography (inc/fonts.php), which
-// ("... Web" family names never match fonts installed on a visitor's computer,
-// so the site always shows the files it serves.)
-// sets the variables below. Fonts that aren't used are never downloaded.
+// Site fonts, chosen in Customize > Typography (inc/fonts.php).
+//
+// The settings set the CSS variables below and add "has-*" body classes;
+// with nothing chosen, the theme looks as it did before. Fonts that aren't
+// used are never downloaded. Manifold DSA's @font-face rules come from
+// dsa-bulma. The bundled fonts use "... Web" family names so a copy installed
+// on a visitor's computer can't stand in for (or hide) the served files.
 
 // Union Gothic, by Matthew Anderson (https://wehtt.am/fonts/).
 @font-face {
@@ -41,6 +43,11 @@
 	--site-button-stretch:normal;
 }
 
+$site-headings:"h1, h2, h3, h4, h5, h6, .title";
+$site-menus:".site .navbar .navbar-item, .site .navbar .navbar-link, .site-footer__social-item__label, .footer-widget .menu, .footer-widget .wp-block-navigation";
+$site-buttons:".button, .wp-block-button__link, .wp-element-button";
+
+// Body text. Theme weights: page content (.content) 500, other text 400.
 body,
 button,
 input,
@@ -56,28 +63,45 @@ textarea {
 	font-family:var(--site-font-body) !important;
 }
 
-h1, h2, h3, h4, h5, h6,
-.title {
+body.has-body-weight,
+.has-body-weight .content {
+	font-weight:var(--site-weight-body);
+}
+
+// Headings. Theme weights: page titles 800, other headings 700.
+#{$site-headings} {
 	font-family:var(--site-font-heading);
 	font-stretch:var(--site-heading-stretch);
 }
 
-// Customize > Typography > Uppercase headings.
+.has-heading-weight {
+	#{$site-headings} {
+		font-weight:var(--site-weight-heading);
+	}
+}
+
 .has-uppercase-headings {
-	h1, h2, h3, h4, h5, h6,
-	.title {
+	#{$site-headings} {
 		text-transform:uppercase;
 	}
 }
 
-// Customize > Typography > Uppercase menus. The name next to the logo keeps
-// the capitalization typed in Customize > Header Bar.
+// Header and footer menus, including the name next to the logo (which keeps
+// its own logo weights and the capitalization typed in Customize > Header
+// Bar). Theme weight: 700.
+#{$site-menus} {
+	font-family:var(--site-font-menu);
+	font-stretch:var(--site-menu-stretch);
+}
+
+.has-menu-weight {
+	#{$site-menus} {
+		font-weight:var(--site-weight-menu);
+	}
+}
+
 .has-uppercase-menus {
-	.site .navbar .navbar-item,
-	.site .navbar .navbar-link,
-	.site-footer__social-item__label,
-	.footer-widget .menu,
-	.footer-widget .wp-block-navigation {
+	#{$site-menus} {
 		text-transform:uppercase;
 	}
 
@@ -86,63 +110,20 @@ h1, h2, h3, h4, h5, h6,
 	}
 }
 
-// Customize > Typography > Button font: theme and block editor buttons.
-.button,
-.wp-block-button__link,
-.wp-element-button {
+// Theme and block editor buttons. Theme weight: 700.
+#{$site-buttons} {
 	font-family:var(--site-font-button);
 	font-stretch:var(--site-button-stretch);
 }
 
 .has-button-weight {
-	.button,
-	.wp-block-button__link,
-	.wp-element-button {
+	#{$site-buttons} {
 		font-weight:var(--site-weight-button);
 	}
 }
 
-// Customize > Typography > Uppercase buttons: theme and block editor buttons.
 .has-uppercase-buttons {
-	.button,
-	.wp-block-button__link,
-	.wp-element-button {
+	#{$site-buttons} {
 		text-transform:uppercase;
-	}
-}
-
-// Customize > Typography > Menu font: header bar and footer menus.
-.site .navbar .navbar-item,
-.site .navbar .navbar-link,
-.site-footer__social-item__label,
-.footer-widget .menu,
-.footer-widget .wp-block-navigation {
-	font-family:var(--site-font-menu);
-	font-stretch:var(--site-menu-stretch);
-}
-
-// Customize > Typography font weights. Body text, headings and menus keep
-// the theme's own weights unless a weight is chosen (the body class is added
-// only then). Page content (.content) is 500 by default, other text 400.
-// The "Atlanta DSA" name keeps its logo weights.
-body.has-body-weight,
-.has-body-weight .content {
-	font-weight:var(--site-weight-body);
-}
-
-.has-heading-weight {
-	h1, h2, h3, h4, h5, h6,
-	.title {
-		font-weight:var(--site-weight-heading);
-	}
-}
-
-.has-menu-weight {
-	.site .navbar .navbar-item,
-	.site .navbar .navbar-link,
-	.site-footer__social-item__label,
-	.footer-widget .menu,
-	.footer-widget .wp-block-navigation {
-		font-weight:var(--site-weight-menu);
 	}
 }
