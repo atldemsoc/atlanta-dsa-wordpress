@@ -8013,6 +8013,9 @@ a.has-text-danger:hover, a.has-text-danger:focus {
   font-weight: 900;
   font-style: italic; }
 
+html {
+  font-size: var(--site-font-size, 16px); }
+
 .site {
   min-height: 100vh;
   overflow-x: clip;

@@ -1,3 +1,8 @@
+// Base font size; set from Customize > Typography (inc/customizer.php).
+html {
+	font-size:var(--site-font-size, 16px);
+}
+
 .site {
   min-height:100vh;
   // 100vw full-width blocks include the scrollbar's width; clip that sliver
