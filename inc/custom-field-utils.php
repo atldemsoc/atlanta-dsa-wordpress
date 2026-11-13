@@ -430,3 +430,45 @@ function get_header_duo_config($templateName) {
 		),
 	);
 }
+
+/**
+ * Page display options shared by the standard page templates
+ * (Default, Centered and Wide). Shown in the editor's sidebar.
+ */
+function get_page_display_config($templateNames) {
+	$location = array();
+
+	foreach ($templateNames as $templateName) {
+		$location[] = array (
+			array (
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'page',
+			),
+			array (
+				'param' => 'page_template',
+				'operator' => '==',
+				'value' => $templateName,
+			),
+		);
+	}
+
+	return array(
+		'key' => 'page_display_options',
+		'title' => 'Page Display',
+		'position' => 'side',
+		'fields' => array (
+			array (
+				'key' => 'field_' . PAGE_HIDE_TITLE_KEY,
+				'label' => 'Hide page title',
+				'name' => PAGE_HIDE_TITLE_KEY,
+				'type' => 'true_false',
+				'ui' => true,
+				'default_value' => false,
+				'instructions' => 'Hides the page title heading at the top of the page, e.g. when the content starts with its own heading. The title is still read by screen readers and search engines.',
+				'required' => 0,
+			),
+		),
+		'location' => $location,
+	);
+}

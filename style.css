@@ -8062,6 +8062,13 @@ a.has-text-danger:hover, a.has-text-danger:focus {
     display: flex;
     flex-direction: row;
     justify-content: space-between; }
+    .site__main.is-centered, .site__main.is-wide {
+      justify-content: center; }
+    .site__main.container.is-wide {
+      max-width: 1920px; }
+      .site__main.container.is-wide > .site__content > .section {
+        padding-left: clamp(1.5rem, 4vw, 5rem);
+        padding-right: clamp(1.5rem, 4vw, 5rem); }
   .site__content {
     flex: 1 1 auto;
     display: flex;
@@ -8192,6 +8199,25 @@ a.has-text-danger:hover, a.has-text-danger:focus {
 
 .content-page .title {
   margin-bottom: 2rem; }
+
+.content-page.is-centered .content-page__header.container {
+  max-width: 41rem; }
+
+.content-page.is-wide .content-page__header.container,
+.content-page.is-wide .post-content__content {
+  max-width: none; }
+
+.screen-reader-text {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  width: 1px;
+  word-wrap: normal !important; }
 
 .hero--image {
   background-size: cover;

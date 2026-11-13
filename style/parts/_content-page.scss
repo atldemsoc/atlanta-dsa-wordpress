@@ -9,3 +9,16 @@
 		margin-bottom:2rem;
 	}
 }
+
+// Centered template: line the title up with the content column.
+.content-page.is-centered .content-page__header.container {
+	max-width:$max-content-width;
+}
+
+// Wide template: title and content use the full width of the page.
+.content-page.is-wide {
+	.content-page__header.container,
+	.post-content__content {
+		max-width:none;
+	}
+}
